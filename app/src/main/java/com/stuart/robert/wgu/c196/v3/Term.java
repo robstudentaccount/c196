@@ -1,5 +1,8 @@
 package com.stuart.robert.wgu.c196.v3;
 
+import android.support.constraint.ConstraintLayout;
+import android.widget.LinearLayout;
+
 public class Term {
     private int id;
     private String name;
@@ -14,4 +17,5 @@ public class Term {
     public String getDisplayName() {
         return "Term " + this.name;
     }
+
 }

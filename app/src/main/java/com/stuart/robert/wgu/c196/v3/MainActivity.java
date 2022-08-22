@@ -82,61 +82,48 @@ public class MainActivity extends AppCompatActivity {
 
         LinearLayout listTerms = (LinearLayout) findViewById(R.id.maTermView);
         listTerms.setLayoutParams(listTermsLP);
+        listTerms.removeAllViews();
 
         ArrayList<Term> terms = Terms.getTerms();
         for(Term term : terms) {
             System.out.println(term.getDisplayName());
+            //Layout and Box
+            ConstraintLayout newTermLayout = new ConstraintLayout(this);
+            listTerms.addView(newTermLayout);
+            newTermLayout.setLayoutParams(llparams);
+            newTermLayout.setBackgroundResource(R.drawable.customborder);
+            //Checkbox
+            CheckBox cb = new CheckBox(this);
+            cbParams.setMargins(0,0,20, 0);
+            cb.setLayoutParams(cbParams);
+            cb.setId(View.generateViewId());
+            cb.setText(term.getDisplayName());
+            newTermLayout.addView(cb);
+            //Textview
+            TextView tv = new TextView(this);
+            tv.setText("Hello world");
+            tv.setId(View.generateViewId());
+            tv.setVisibility(View.GONE);
+            newTermLayout.addView(tv);
+            //Down Arrow
+            ImageView downArrow = new ImageView(this);
+            downArrow.setImageResource(R.drawable.ic_down_arrow);
+            downArrow.setId(View.generateViewId());
+            newTermLayout.addView(downArrow);
+            downArrow.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    tv.setVisibility(View.VISIBLE);
+                }
+
+            });
+            //Constraint Layout
+            ConstraintSet constraintSet = new ConstraintSet();
+            constraintSet.clone(newTermLayout);
+            constraintSet.connect(cb.getId(),ConstraintSet.LEFT,downArrow.getId(),ConstraintSet.RIGHT,25);
+            constraintSet.connect(cb.getId(),ConstraintSet.TOP,downArrow.getId(),ConstraintSet.TOP,0);
+            constraintSet.connect(tv.getId(),ConstraintSet.LEFT,downArrow.getId(),ConstraintSet.LEFT,0);
+            constraintSet.connect(tv.getId(),ConstraintSet.TOP,downArrow.getId(),ConstraintSet.BOTTOM,20);
+            constraintSet.applyTo(newTermLayout);
         }
-
-
-
-
-
-        //Layout and Box
-        ConstraintLayout newTermLayout = new ConstraintLayout(this);
-        listTerms.addView(newTermLayout);
-        //llparams.setMargins(0,0,20, 0);
-
-        newTermLayout.setLayoutParams(llparams);
-        newTermLayout.setBackgroundResource(R.drawable.customborder);
-
-
-        //Checkbox
-        CheckBox cb = new CheckBox(this);
-        //cb.setText(newTerm.getDisplayName());
-
-        //Textview
-        TextView tv = new TextView(this);
-        tv.setText("Hello world");
-        tv.setId(View.generateViewId());
-        tv.setVisibility(View.GONE);
-        newTermLayout.addView(tv);
-
-        //Down Arrow
-        ImageView downArrow = new ImageView(this);
-        downArrow.setImageResource(R.drawable.ic_down_arrow);
-        downArrow.setId(View.generateViewId());
-        newTermLayout.addView(downArrow);
-        // Down Arrow Click Listener
-        downArrow.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                tv.setVisibility(View.VISIBLE);
-            }
-        });
-
-        cbParams.setMargins(0,0,20, 0);
-        cb.setLayoutParams(cbParams);
-        cb.setId(View.generateViewId());
-        newTermLayout.addView(cb);
-
-        //Constraint Layout
-        ConstraintSet constraintSet = new ConstraintSet();
-        constraintSet.clone(newTermLayout);
-        constraintSet.connect(cb.getId(),ConstraintSet.LEFT,downArrow.getId(),ConstraintSet.RIGHT,25);
-        constraintSet.connect(cb.getId(),ConstraintSet.TOP,downArrow.getId(),ConstraintSet.TOP,0);
-        constraintSet.connect(tv.getId(),ConstraintSet.LEFT,downArrow.getId(),ConstraintSet.LEFT,0);
-        constraintSet.connect(tv.getId(),ConstraintSet.TOP,downArrow.getId(),ConstraintSet.BOTTOM,20);
-        constraintSet.applyTo(newTermLayout);
-
     }
 }

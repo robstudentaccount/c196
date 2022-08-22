@@ -21,5 +21,4 @@ public class Terms {
     public static ArrayList<Term> getTerms() {
         return terms;
     }
-
 }
