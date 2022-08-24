@@ -3,6 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/courseManagementItem"
+        android:icon="@drawable/ic_class_menu"
+        android:title="Course Management" />
+    <item
         android:id="@+id/addTermItem"
         android:enabled="true"
         android:icon="@drawable/ic_add_term"

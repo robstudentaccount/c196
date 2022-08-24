@@ -52,10 +52,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.addTermItem:
-                //addTermToView();
-                Intent intent = new Intent(this, TermManagerActivity.class);
-                startActivity(intent);
-
+                Intent termIntent = new Intent(this, TermManagerActivity.class);
+                startActivity(termIntent);
+                break;
+            case R.id.courseManagementItem:
+                Intent courseIntent = new Intent(this, CourseManager.class);
+                startActivity(courseIntent);
                 break;
 
         }
@@ -99,12 +101,21 @@ public class MainActivity extends AppCompatActivity {
             cb.setId(View.generateViewId());
             cb.setText(term.getDisplayName());
             newTermLayout.addView(cb);
+
             //Textview
-            TextView tv = new TextView(this);
-            tv.setText("Hello world");
-            tv.setId(View.generateViewId());
-            tv.setVisibility(View.GONE);
-            newTermLayout.addView(tv);
+            TextView startDateLbl = new TextView(this);
+            startDateLbl.setText("Start Date: " + term.getStartDateString());
+            startDateLbl.setId(View.generateViewId());
+            startDateLbl.setVisibility(View.GONE);
+            newTermLayout.addView(startDateLbl);
+            //Textview
+            TextView endDateLbl = new TextView(this);
+            endDateLbl.setText("End Date: " + term.getEndDateString());
+            endDateLbl.setId(View.generateViewId());
+            endDateLbl.setVisibility(View.GONE);
+            newTermLayout.addView(endDateLbl);
+
+
             //Down Arrow
             ImageView downArrow = new ImageView(this);
             downArrow.setImageResource(R.drawable.ic_down_arrow);
@@ -112,7 +123,15 @@ public class MainActivity extends AppCompatActivity {
             newTermLayout.addView(downArrow);
             downArrow.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    tv.setVisibility(View.VISIBLE);
+                    if (startDateLbl.getVisibility() == View.VISIBLE) {
+                        startDateLbl.setVisibility(View.GONE);
+                        endDateLbl.setVisibility(View.GONE);
+                        downArrow.setImageResource(R.drawable.ic_down_arrow);
+                    } else {
+                        startDateLbl.setVisibility(View.VISIBLE);
+                        endDateLbl.setVisibility(View.VISIBLE);
+                        downArrow.setImageResource(R.drawable.ic_up_arrow);
+                    }
                 }
 
             });
@@ -121,8 +140,10 @@ public class MainActivity extends AppCompatActivity {
             constraintSet.clone(newTermLayout);
             constraintSet.connect(cb.getId(),ConstraintSet.LEFT,downArrow.getId(),ConstraintSet.RIGHT,25);
             constraintSet.connect(cb.getId(),ConstraintSet.TOP,downArrow.getId(),ConstraintSet.TOP,0);
-            constraintSet.connect(tv.getId(),ConstraintSet.LEFT,downArrow.getId(),ConstraintSet.LEFT,0);
-            constraintSet.connect(tv.getId(),ConstraintSet.TOP,downArrow.getId(),ConstraintSet.BOTTOM,20);
+            constraintSet.connect(startDateLbl.getId(),ConstraintSet.LEFT,downArrow.getId(),ConstraintSet.LEFT,0);
+            constraintSet.connect(startDateLbl.getId(),ConstraintSet.TOP,downArrow.getId(),ConstraintSet.BOTTOM,20);
+            constraintSet.connect(endDateLbl.getId(),ConstraintSet.LEFT,downArrow.getId(),ConstraintSet.LEFT,0);
+            constraintSet.connect(endDateLbl.getId(),ConstraintSet.TOP,startDateLbl.getId(),ConstraintSet.BOTTOM,20);
             constraintSet.applyTo(newTermLayout);
         }
     }

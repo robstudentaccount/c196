@@ -1,12 +1,14 @@
 package com.stuart.robert.wgu.c196.v3;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class TermManagerActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.stuart.robert.wgu.c196.v3.TERM";
@@ -26,9 +28,18 @@ public class TermManagerActivity extends AppCompatActivity {
         addTermBtn.setOnClickListener(tl);
     }
     public void returnToMA() {
-        //Create new term
+        // Create new term
         TextView newTermName = findViewById(R.id.termNameTextView);
-        Term newTerm = new Term(newTermName.getText().toString());
+        TextView startDateTxt = findViewById(R.id.termStartDateTxt);
+        TextView endDateTxt = findViewById(R.id.termEndDateTxt);
+
+        // Term Dates
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        LocalDate startDateDate = LocalDate.parse(startDateTxt.getText().toString(), formatter);
+        LocalDate endDateDate = LocalDate.parse(endDateTxt.getText().toString(), formatter);
+
+        // Create Term Object
+        Term newTerm = new Term(newTermName.getText().toString(), startDateDate, endDateDate);
         Terms.addNewTerm(newTerm);
 
         Intent intent = new Intent(this, com.stuart.robert.wgu.c196.v3.MainActivity.class);
