@@ -13,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -83,7 +84,8 @@ public class MainActivity extends AppCompatActivity {
                 FrameLayout.LayoutParams.WRAP_CONTENT);
 
         LinearLayout listTerms = (LinearLayout) findViewById(R.id.maTermView);
-        listTerms.setLayoutParams(listTermsLP);
+
+        listTerms.setLayoutParams(listTermsLP); //FIX
         listTerms.removeAllViews();
 
         ArrayList<Term> terms = Terms.getTerms();
@@ -95,7 +97,8 @@ public class MainActivity extends AppCompatActivity {
             newTermLayout.setLayoutParams(llparams);
             newTermLayout.setBackgroundResource(R.drawable.customborder);
             //Checkbox
-            CheckBox cb = new CheckBox(this);
+            //CheckBox cb = new CheckBox(this);
+            TextView cb = new TextView(this);
             cbParams.setMargins(0,0,20, 0);
             cb.setLayoutParams(cbParams);
             cb.setId(View.generateViewId());

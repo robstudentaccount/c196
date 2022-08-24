@@ -16,15 +16,5 @@
         android:visible="true"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/removeTermItem"
-        android:enabled="true"
-        android:icon="@drawable/ic_remove_term"
-        android:iconTint="@color/purple_200"
-        android:orderInCategory="100"
-        android:title="Add Term"
-        android:visible="true"
-        app:showAsAction="always" />
-
 
 </menu>
