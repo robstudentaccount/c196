@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/editBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -26,13 +26,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/deleteBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Delete"
-        app:layout_constraintStart_toEndOf="@+id/button3"
+        app:layout_constraintStart_toEndOf="@+id/editBtn"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
@@ -41,9 +41,10 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button3">
+        app:layout_constraintTop_toBottomOf="@+id/editBtn">
 
         <LinearLayout
+            android:id="@+id/courseListLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
