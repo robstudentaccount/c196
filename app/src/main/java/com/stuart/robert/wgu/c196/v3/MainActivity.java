@@ -118,6 +118,13 @@ public class MainActivity extends AppCompatActivity {
             endDateLbl.setVisibility(View.GONE);
             newTermLayout.addView(endDateLbl);
 
+            //Course Icon
+            ImageView courseIC = new ImageView(this);
+            courseIC.setImageResource(R.drawable.ic_class_menu);
+            courseIC.setId(View.generateViewId());
+            newTermLayout.addView(courseIC);
+            courseIC.setVisibility(View.GONE);
+
 
             //Down Arrow
             ImageView downArrow = new ImageView(this);
@@ -130,14 +137,20 @@ public class MainActivity extends AppCompatActivity {
                         startDateLbl.setVisibility(View.GONE);
                         endDateLbl.setVisibility(View.GONE);
                         downArrow.setImageResource(R.drawable.ic_down_arrow);
+                        courseIC.setVisibility(View.GONE);
                     } else {
                         startDateLbl.setVisibility(View.VISIBLE);
                         endDateLbl.setVisibility(View.VISIBLE);
                         downArrow.setImageResource(R.drawable.ic_up_arrow);
+                        courseIC.setVisibility(View.VISIBLE);
                     }
                 }
 
             });
+
+
+
+
             //Constraint Layout
             ConstraintSet constraintSet = new ConstraintSet();
             constraintSet.clone(newTermLayout);
@@ -147,6 +160,10 @@ public class MainActivity extends AppCompatActivity {
             constraintSet.connect(startDateLbl.getId(),ConstraintSet.TOP,downArrow.getId(),ConstraintSet.BOTTOM,20);
             constraintSet.connect(endDateLbl.getId(),ConstraintSet.LEFT,downArrow.getId(),ConstraintSet.LEFT,0);
             constraintSet.connect(endDateLbl.getId(),ConstraintSet.TOP,startDateLbl.getId(),ConstraintSet.BOTTOM,20);
+
+            constraintSet.connect(courseIC.getId(),ConstraintSet.TOP,endDateLbl.getId(),ConstraintSet.BOTTOM,20);
+            constraintSet.connect(courseIC.getId(),ConstraintSet.LEFT,endDateLbl.getId(),ConstraintSet.LEFT,20);
+
             constraintSet.applyTo(newTermLayout);
         }
     }
