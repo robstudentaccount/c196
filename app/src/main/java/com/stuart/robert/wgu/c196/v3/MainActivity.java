@@ -124,6 +124,13 @@ public class MainActivity extends AppCompatActivity {
             courseIC.setId(View.generateViewId());
             newTermLayout.addView(courseIC);
             courseIC.setVisibility(View.GONE);
+            Intent addCourseToTermIntent = new Intent(this, courseSection.class);
+            courseIC.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(addCourseToTermIntent);
+                }
+            });
 
 
             //Down Arrow
