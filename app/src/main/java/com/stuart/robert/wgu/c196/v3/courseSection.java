@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -32,6 +33,7 @@ public class courseSection extends AppCompatActivity {
 
         TextView startDateTxt = (TextView) findViewById(R.id.startDateTxt);
         TextView endDateTxt = (TextView) findViewById(R.id.endDateText);
+        Button cancelBtn = (Button) findViewById(R.id.courseSectionCancelBtn);
 
         View.OnClickListener calendarClick = new View.OnClickListener() {
             @Override
@@ -65,6 +67,12 @@ public class courseSection extends AppCompatActivity {
 
         startDateTxt.setOnClickListener(calendarClick);
         endDateTxt.setOnClickListener(calendarClick);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
     }
     private void drawCourses() {
