@@ -31,32 +31,44 @@ public class courseSection extends AppCompatActivity {
 
 
         TextView startDateTxt = (TextView) findViewById(R.id.startDateTxt);
-        startDateTxt.setOnClickListener(new View.OnClickListener() {
+        TextView endDateTxt = (TextView) findViewById(R.id.endDateText);
+
+        View.OnClickListener calendarClick = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Date date;
-                String info = startDateTxt.getText().toString();
+                TextView textView = (TextView)view;
+                String info = textView.getText().toString();
                 if(info.equals(""))info="03/22/22";
                 try {
                     myCalendarStart.setTime(sdf.parse(info));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+
+                startDate = new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
+                        myCalendarStart.set(Calendar.YEAR, year);
+                        myCalendarStart.set(Calendar.MONTH, monthOfYear);
+                        myCalendarStart.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        textView.setText(sdf.format(myCalendarStart.getTime()));
+                    }
+                };
+
+
                 new DatePickerDialog(courseSection.this, startDate,
                         myCalendarStart.get(Calendar.YEAR), myCalendarStart.get(Calendar.MONTH),
                         myCalendarStart.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
 
-        startDate = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
-                myCalendarStart.set(Calendar.YEAR, year);
-                myCalendarStart.set(Calendar.MONTH, monthOfYear);
-                myCalendarStart.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                startDateTxt.setText(sdf.format(myCalendarStart.getTime()));
+
+
             }
         };
+
+        startDateTxt.setOnClickListener(calendarClick);
+        endDateTxt.setOnClickListener(calendarClick);
+
     }
     private void drawCourses() {
         LinearLayout courseListView = (LinearLayout) findViewById(R.id.courseListView);
