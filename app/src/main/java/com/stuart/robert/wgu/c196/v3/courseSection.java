@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -17,9 +17,9 @@ import java.util.Locale;
 
 public class courseSection extends AppCompatActivity {
 
-    DatePickerDialog.OnDateSetListener startDate;
+    DatePickerDialog.OnDateSetListener pickedDate;
     final Calendar myCalendarStart = Calendar.getInstance();
-    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yy", Locale.US);
+    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +39,14 @@ public class courseSection extends AppCompatActivity {
                 Date date;
                 TextView textView = (TextView)view;
                 String info = textView.getText().toString();
-                if(info.equals(""))info="03/22/22";
+                if(info.equals(""))info="03/22/2022";
                 try {
                     myCalendarStart.setTime(sdf.parse(info));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
 
-                startDate = new DatePickerDialog.OnDateSetListener() {
+                pickedDate = new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
                         myCalendarStart.set(Calendar.YEAR, year);
@@ -57,12 +57,9 @@ public class courseSection extends AppCompatActivity {
                 };
 
 
-                new DatePickerDialog(courseSection.this, startDate,
+                new DatePickerDialog(courseSection.this, pickedDate,
                         myCalendarStart.get(Calendar.YEAR), myCalendarStart.get(Calendar.MONTH),
                         myCalendarStart.get(Calendar.DAY_OF_MONTH)).show();
-
-
-
             }
         };
 
@@ -72,8 +69,12 @@ public class courseSection extends AppCompatActivity {
     }
     private void drawCourses() {
         LinearLayout courseListView = (LinearLayout) findViewById(R.id.courseListView);
-        TextView t = new TextView(this);
-        t.setText("HHHHHHHHHHHHHHHHHHHHHHHH");
-        courseListView.addView(t);
+        courseListView.removeAllViews();
+        for (Course course : Courses.getCourses()) {
+            RadioButton courseRT = new RadioButton(this);
+            courseRT.setText(course.getName());
+
+            courseListView.addView(courseRT);
+        }
     }
 }
