@@ -6,13 +6,15 @@ public class Course implements Serializable {
     String name = "";
     String startDate;
     String endDate;
+    String status;
     public Course(String name) {
         this.name = name;
     }
-    public Course (String name, String startDate, String endDate) {
+    public Course (String name, String startDate, String endDate, String status) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.status = status;
     }
 
     public String getName() {

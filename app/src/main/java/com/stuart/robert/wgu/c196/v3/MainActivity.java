@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         LinearLayout.LayoutParams lDownArrow = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT);
+                LinearLayout.LayoutParams.MATCH_PARENT);
 
         FrameLayout.LayoutParams listTermsLP = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
@@ -138,14 +139,28 @@ public class MainActivity extends AppCompatActivity {
             });
             // Sections
             LinearLayout courseListLayout = new LinearLayout(this);
-            courseListLayout.setLayoutParams(listTermsLP);
+            courseListLayout.setOrientation(LinearLayout.VERTICAL);
+            courseListLayout.setLayoutParams(lDownArrow);
             newTermLayout.addView(courseListLayout);
             courseListLayout.setId(View.generateViewId());
             courseListLayout.setVisibility(View.GONE);
             for (Course section: term.getSections()) {
+                LinearLayout sectionLayout = new LinearLayout(this);
+                sectionLayout.setOrientation(LinearLayout.HORIZONTAL);
+                sectionLayout.setLayoutParams(lDownArrow);
+
                 TextView courseTextView = new TextView(this);
+                courseTextView.setId(View.generateViewId());
                 courseTextView.setText("Section: " + section.getName() + " FROM: " + section.getStartDate() + " TO: " + section.endDate);
-                courseListLayout.addView(courseTextView);
+
+                ImageView sectionDetailsIC = new ImageView(this);
+                sectionDetailsIC.setImageResource(R.drawable.ic_read_more);
+
+
+                sectionLayout.addView(courseTextView);
+                sectionLayout.addView(sectionDetailsIC);
+
+                courseListLayout.addView(sectionLayout);
             }
 
             //Down Arrow

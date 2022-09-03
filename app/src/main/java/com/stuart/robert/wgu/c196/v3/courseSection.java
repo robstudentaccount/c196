@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -94,7 +95,9 @@ public class courseSection extends AppCompatActivity {
                 }
                 selectedCourse.setStartDate(startDateTxt.getText().toString());
                 selectedCourse.setEndDate(endDateTxt.getText().toString());
-                Course section = new Course(selectedCourse.getName(),selectedCourse.startDate, selectedCourse.endDate);
+                Spinner sectionStatus = (Spinner) findViewById(R.id.sectionStatusSpinner);
+                Course section = new Course(selectedCourse.getName(),selectedCourse.startDate, selectedCourse.endDate,
+                        sectionStatus.toString());
                 selectedTerm.addSection(section);
                 finish();
             }
