@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +42,9 @@ public class courseSection extends AppCompatActivity {
     TextView instructorNameTxt;
     TextView instructorTN;
     TextView instructorEmail;
+    TextView courseNotes;
+    ScrollView courseScrollView;
+    TextView courseSelectTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,10 @@ public class courseSection extends AppCompatActivity {
         instructorNameTxt = (EditText) findViewById(R.id.instructorNameTxt);
         instructorTN = (EditText) findViewById(R.id.instructorPhoneNumberTextView);
         instructorEmail = (EditText) findViewById(R.id.instructorEmailTextView);
+        courseNotes = (EditText) findViewById(R.id.courseNotesTextView);
+        courseScrollView = (ScrollView) findViewById(R.id.scrollView2);
+        courseSelectTitle = (TextView) findViewById(R.id.courseSectionSelectCourseTextView);
+
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,6 +81,8 @@ public class courseSection extends AppCompatActivity {
         drawCourses();
 
         if (selectedSection != null) {
+            courseSelectTitle.setText("Course: " + selectedSection.getName());
+            courseScrollView.setVisibility(View.GONE);
             startDateTxt.setText(selectedSection.getStartDate());
             endDateTxt.setText(selectedSection.getEndDate());
             addBtn.setText("Save");
@@ -80,6 +90,7 @@ public class courseSection extends AppCompatActivity {
             instructorNameTxt.setText(selectedSection.getInstructorName());
             instructorTN.setText(selectedSection.getInstructorTN());
             instructorEmail.setText(selectedSection.getInstructorEmail());
+            courseNotes.setText(selectedSection.getNotes());
             switch (selectedSection.getStatus()) {
                 case "In Progress":
                     sectionStatus.setSelection(1);
@@ -163,6 +174,7 @@ public class courseSection extends AppCompatActivity {
 
                     Course section = new Course(selectedCourse.getName(),
                             selectedCourse.startDate, selectedCourse.endDate,
+                            selectedCourse.notes,
                             sectionStatus.getSelectedItem().toString(),
                             instructorNameTxt.getText().toString(),
                             instructorTN.getText().toString(),
@@ -188,9 +200,11 @@ public class courseSection extends AppCompatActivity {
             courseRT.setText(course.getName());
 
             if (selectedSection != null) {
+                courseRT.setEnabled(false);
                 if (course.getName().equals(selectedSection.getName())) {
                     courseRT.setChecked(true);
                     selectedCourse = course;
+                    courseNotes.setText(selectedCourse.getNotes());
                 }
             }
 
@@ -198,6 +212,7 @@ public class courseSection extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     selectedCourse = course;
+                    courseNotes.setText(course.getNotes());
                 }
             });
 
