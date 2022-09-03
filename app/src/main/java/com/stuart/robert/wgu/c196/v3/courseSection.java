@@ -27,6 +27,14 @@ public class courseSection extends AppCompatActivity {
     private Course selectedCourse;
     private String selectedTermName;
     private Term selectedTerm;
+    private String selectedSectionID;
+    private Course selectedSection;
+
+    TextView startDateTxt;
+    TextView endDateTxt;
+    Button cancelBtn;
+    Button addBtn;
+    Spinner sectionStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,16 +43,42 @@ public class courseSection extends AppCompatActivity {
         Intent intent = getIntent();
         selectedTermName = intent.getStringExtra("Term Name");
         selectedTerm = Terms.getTermByName(selectedTermName);
+        selectedSectionID = intent.getStringExtra("SectionID");
+        selectedSection = selectedTerm.getSectionByID(selectedSectionID);
+
+        startDateTxt = (TextView) findViewById(R.id.startDateTxt);
+        endDateTxt = (TextView) findViewById(R.id.endDateText);
+        cancelBtn = (Button) findViewById(R.id.courseSectionCancelBtn);
+        addBtn = (Button) findViewById(R.id.courseSectionAddBtn);
+        sectionStatus = (Spinner) findViewById(R.id.sectionStatusSpinner);
 
         drawCourses();
 
 
+        if (selectedSection != null) {
+            startDateTxt.setText(selectedSection.getStartDate());
+            endDateTxt.setText(selectedSection.getEndDate());
+
+            switch (selectedSection.getStatus()) {
+                case "In Progress":
+                    sectionStatus.setSelection(1);
+                    break;
+                case "Completed":
+                    sectionStatus.setSelection(2);
+                    break;
+                case "Dropped":
+                    sectionStatus.setSelection(3);
+                    break;
+                case "Plan to Take":
+                    sectionStatus.setSelection(4);
+                    break;
+                default:
+                    System.out.println("STATUS: " + selectedSection.getStatus());
+            }
 
 
-        TextView startDateTxt = (TextView) findViewById(R.id.startDateTxt);
-        TextView endDateTxt = (TextView) findViewById(R.id.endDateText);
-        Button cancelBtn = (Button) findViewById(R.id.courseSectionCancelBtn);
-        Button addBtn = (Button) findViewById(R.id.courseSectionAddBtn);
+            System.out.println(selectedSection.getStartDate());
+        }
 
         View.OnClickListener calendarClick = new View.OnClickListener() {
             @Override
@@ -95,13 +129,16 @@ public class courseSection extends AppCompatActivity {
                 }
                 selectedCourse.setStartDate(startDateTxt.getText().toString());
                 selectedCourse.setEndDate(endDateTxt.getText().toString());
-                Spinner sectionStatus = (Spinner) findViewById(R.id.sectionStatusSpinner);
+
                 Course section = new Course(selectedCourse.getName(),selectedCourse.startDate, selectedCourse.endDate,
-                        sectionStatus.toString());
+                        sectionStatus.getSelectedItem().toString());
                 selectedTerm.addSection(section);
                 finish();
             }
         });
+
+
+
 
     }
     private void drawCourses() {
@@ -110,6 +147,12 @@ public class courseSection extends AppCompatActivity {
         for (Course course : Courses.getCourses()) {
             RadioButton courseRT = new RadioButton(this);
             courseRT.setText(course.getName());
+
+            if (selectedSection != null) {
+                if (course.getName().equals(selectedSection.getName())) {
+                    courseRT.setChecked(true);
+                }
+            }
 
             courseRT.setOnClickListener(new View.OnClickListener() {
                 @Override

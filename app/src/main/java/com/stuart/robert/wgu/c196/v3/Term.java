@@ -32,6 +32,14 @@ public class Term {
     public void addSection(Course course) {
         sections.add(course);
     }
+    public Course getSectionByID(String id) {
+        for (Course section: sections) {
+            if (section.getName().equals(id)) {
+                return section;
+            }
+        }
+        return null;
+    }
     public ArrayList<Course> getSections () {
         return sections;
     }

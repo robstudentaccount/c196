@@ -38,4 +38,12 @@ public class Course implements Serializable {
     public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

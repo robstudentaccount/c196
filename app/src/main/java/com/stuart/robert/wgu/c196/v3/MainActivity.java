@@ -155,7 +155,15 @@ public class MainActivity extends AppCompatActivity {
 
                 ImageView sectionDetailsIC = new ImageView(this);
                 sectionDetailsIC.setImageResource(R.drawable.ic_read_more);
-
+                sectionDetailsIC.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getApplicationContext(), courseSection.class);
+                        intent.putExtra("Term Name", term.getDisplayName());
+                        intent.putExtra("SectionID", section.getName());
+                        startActivity(intent);
+                    }
+                });
 
                 sectionLayout.addView(courseTextView);
                 sectionLayout.addView(sectionDetailsIC);
