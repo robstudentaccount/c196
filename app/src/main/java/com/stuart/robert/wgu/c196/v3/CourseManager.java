@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.content.Intent;
 
@@ -70,6 +71,8 @@ public class CourseManager extends AppCompatActivity {
         selectedCourse = null;
         LinearLayout ll = findViewById(R.id.courseListLayout);
         ll.removeAllViews();
+        RadioGroup rg = new RadioGroup(this);
+        ll.addView(rg);
         for(Course course : Courses.getCourses()) {
             RadioButton courseRB = new RadioButton(this);
             courseRB.setText(course.name);
@@ -80,7 +83,7 @@ public class CourseManager extends AppCompatActivity {
                     selectedCourse = course;
                 }
             });
-            ll.addView(courseRB);
+            rg.addView(courseRB);
         }
     }
     public Course getSelectedCourse() {

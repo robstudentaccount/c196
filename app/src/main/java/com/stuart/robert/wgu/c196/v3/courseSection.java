@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -139,12 +140,21 @@ public class courseSection extends AppCompatActivity {
                     toast.show();
                     return;
                 }
-                selectedCourse.setStartDate(startDateTxt.getText().toString());
-                selectedCourse.setEndDate(endDateTxt.getText().toString());
 
-                Course section = new Course(selectedCourse.getName(),selectedCourse.startDate, selectedCourse.endDate,
-                        sectionStatus.getSelectedItem().toString());
-                selectedTerm.addSection(section);
+                if (selectedSection != null) {
+                    selectedSection.setStartDate(startDateTxt.getText().toString());
+                    selectedSection.setEndDate(endDateTxt.getText().toString());
+                    selectedSection.setName(selectedCourse.getName());
+                    selectedSection.setStatus(sectionStatus.getSelectedItem().toString());
+
+                } else {
+                    selectedCourse.setStartDate(startDateTxt.getText().toString());
+                    selectedCourse.setEndDate(endDateTxt.getText().toString());
+
+                    Course section = new Course(selectedCourse.getName(), selectedCourse.startDate, selectedCourse.endDate,
+                            sectionStatus.getSelectedItem().toString());
+                    selectedTerm.addSection(section);
+                }
                 finish();
             }
         });
@@ -156,13 +166,17 @@ public class courseSection extends AppCompatActivity {
     private void drawCourses() {
         LinearLayout courseListView = (LinearLayout) findViewById(R.id.courseListView);
         courseListView.removeAllViews();
+        RadioGroup rg = new RadioGroup(this);
+        courseListView.addView(rg);
         for (Course course : Courses.getCourses()) {
             RadioButton courseRT = new RadioButton(this);
+            courseRT.setId(View.generateViewId());
             courseRT.setText(course.getName());
 
             if (selectedSection != null) {
                 if (course.getName().equals(selectedSection.getName())) {
                     courseRT.setChecked(true);
+                    selectedCourse = course;
                 }
             }
 
@@ -173,7 +187,7 @@ public class courseSection extends AppCompatActivity {
                 }
             });
 
-            courseListView.addView(courseRT);
+            rg.addView(courseRT);
         }
     }
 }
