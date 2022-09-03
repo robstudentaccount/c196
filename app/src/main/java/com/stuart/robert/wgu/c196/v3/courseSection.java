@@ -35,6 +35,7 @@ public class courseSection extends AppCompatActivity {
     Button cancelBtn;
     Button addBtn;
     Spinner sectionStatus;
+    Button deleteBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +52,24 @@ public class courseSection extends AppCompatActivity {
         cancelBtn = (Button) findViewById(R.id.courseSectionCancelBtn);
         addBtn = (Button) findViewById(R.id.courseSectionAddBtn);
         sectionStatus = (Spinner) findViewById(R.id.sectionStatusSpinner);
+        deleteBtn = (Button) findViewById(R.id.courseSectionDeleteBtn);
+        deleteBtn.setVisibility(View.GONE);
+
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedTerm.removeSection(selectedSection);
+                finish();
+            }
+        });
 
         drawCourses();
-
 
         if (selectedSection != null) {
             startDateTxt.setText(selectedSection.getStartDate());
             endDateTxt.setText(selectedSection.getEndDate());
+            addBtn.setText("Save");
+            deleteBtn.setVisibility(View.VISIBLE);
 
             switch (selectedSection.getStatus()) {
                 case "In Progress":

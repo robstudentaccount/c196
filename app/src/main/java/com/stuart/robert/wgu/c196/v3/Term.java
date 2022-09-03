@@ -40,6 +40,9 @@ public class Term {
         }
         return null;
     }
+    public void removeSection(Course section) {
+        sections.remove(section);
+    }
     public ArrayList<Course> getSections () {
         return sections;
     }
