@@ -7,14 +7,24 @@ public class Course implements Serializable {
     String startDate;
     String endDate;
     String status;
+    String instructorName;
+    String instructorTN;
+    String instructorEmail;
+
     public Course(String name) {
         this.name = name;
     }
-    public Course (String name, String startDate, String endDate, String status) {
+    public Course (String name, String startDate, String endDate,
+                   String status, String instructorName, String instructorTN,
+                   String instructorEmail)
+    {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = status;
+        this.instructorName = instructorName;
+        this.instructorTN = instructorTN;
+        this.instructorEmail = instructorEmail;
     }
 
     public String getName() {
@@ -45,5 +55,29 @@ public class Course implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getInstructorName() {
+        return instructorName;
+    }
+
+    public void setInstructorName(String instructorName) {
+        this.instructorName = instructorName;
+    }
+
+    public String getInstructorTN() {
+        return instructorTN;
+    }
+
+    public void setInstructorTN(String instructorTN) {
+        this.instructorTN = instructorTN;
+    }
+
+    public String getInstructorEmail() {
+        return instructorEmail;
+    }
+
+    public void setInstructorEmail(String instructorEmail) {
+        this.instructorEmail = instructorEmail;
     }
 }

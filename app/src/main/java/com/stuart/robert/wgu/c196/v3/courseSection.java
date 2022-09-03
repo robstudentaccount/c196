@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -37,6 +38,9 @@ public class courseSection extends AppCompatActivity {
     Button addBtn;
     Spinner sectionStatus;
     Button deleteBtn;
+    TextView instructorNameTxt;
+    TextView instructorTN;
+    TextView instructorEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +59,9 @@ public class courseSection extends AppCompatActivity {
         sectionStatus = (Spinner) findViewById(R.id.sectionStatusSpinner);
         deleteBtn = (Button) findViewById(R.id.courseSectionDeleteBtn);
         deleteBtn.setVisibility(View.GONE);
-
+        instructorNameTxt = (EditText) findViewById(R.id.instructorNameTxt);
+        instructorTN = (EditText) findViewById(R.id.instructorPhoneNumberTextView);
+        instructorEmail = (EditText) findViewById(R.id.instructorEmailTextView);
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,7 +77,9 @@ public class courseSection extends AppCompatActivity {
             endDateTxt.setText(selectedSection.getEndDate());
             addBtn.setText("Save");
             deleteBtn.setVisibility(View.VISIBLE);
-
+            instructorNameTxt.setText(selectedSection.getInstructorName());
+            instructorTN.setText(selectedSection.getInstructorTN());
+            instructorEmail.setText(selectedSection.getInstructorEmail());
             switch (selectedSection.getStatus()) {
                 case "In Progress":
                     sectionStatus.setSelection(1);
@@ -146,13 +154,19 @@ public class courseSection extends AppCompatActivity {
                     selectedSection.setEndDate(endDateTxt.getText().toString());
                     selectedSection.setName(selectedCourse.getName());
                     selectedSection.setStatus(sectionStatus.getSelectedItem().toString());
-
+                    selectedSection.setInstructorName(instructorNameTxt.getText().toString());
+                    selectedSection.setInstructorTN(instructorTN.getText().toString());
+                    selectedSection.setInstructorEmail(instructorEmail.getText().toString());
                 } else {
                     selectedCourse.setStartDate(startDateTxt.getText().toString());
                     selectedCourse.setEndDate(endDateTxt.getText().toString());
 
-                    Course section = new Course(selectedCourse.getName(), selectedCourse.startDate, selectedCourse.endDate,
-                            sectionStatus.getSelectedItem().toString());
+                    Course section = new Course(selectedCourse.getName(),
+                            selectedCourse.startDate, selectedCourse.endDate,
+                            sectionStatus.getSelectedItem().toString(),
+                            instructorNameTxt.getText().toString(),
+                            instructorTN.getText().toString(),
+                            instructorEmail.getText().toString());
                     selectedTerm.addSection(section);
                 }
                 finish();
