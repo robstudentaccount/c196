@@ -21,4 +21,12 @@ public class Terms {
     public static ArrayList<Term> getTerms() {
         return terms;
     }
+    public static Term getTermByName(String name) {
+        for (Term term: terms) {
+            if (term.getDisplayName().equals(name)) {
+                return term;
+            }
+        }
+        return null;
+    }
 }

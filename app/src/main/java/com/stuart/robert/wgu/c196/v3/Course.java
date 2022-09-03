@@ -9,6 +9,11 @@ public class Course implements Serializable {
     public Course(String name) {
         this.name = name;
     }
+    public Course (String name, String startDate, String endDate) {
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 
     public String getName() {
         return name;

@@ -9,7 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
+ import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,6 +19,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onStart() {
+        super.onStart();
+        drawTerms();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Term Manager");
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu items for use in the action bar
@@ -44,10 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onCreateOptionsMenu(menu);
 
-
-
-
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -128,10 +132,21 @@ public class MainActivity extends AppCompatActivity {
             courseIC.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    addCourseToTermIntent.putExtra("Term Name", term.getDisplayName());
                     startActivity(addCourseToTermIntent);
                 }
             });
-
+            // Sections
+            LinearLayout courseListLayout = new LinearLayout(this);
+            courseListLayout.setLayoutParams(listTermsLP);
+            newTermLayout.addView(courseListLayout);
+            courseListLayout.setId(View.generateViewId());
+            courseListLayout.setVisibility(View.GONE);
+            for (Course section: term.getSections()) {
+                TextView courseTextView = new TextView(this);
+                courseTextView.setText("Section: " + section.getName() + " FROM: " + section.getStartDate() + " TO: " + section.endDate);
+                courseListLayout.addView(courseTextView);
+            }
 
             //Down Arrow
             ImageView downArrow = new ImageView(this);
@@ -145,11 +160,13 @@ public class MainActivity extends AppCompatActivity {
                         endDateLbl.setVisibility(View.GONE);
                         downArrow.setImageResource(R.drawable.ic_down_arrow);
                         courseIC.setVisibility(View.GONE);
+                        courseListLayout.setVisibility(View.GONE);
                     } else {
                         startDateLbl.setVisibility(View.VISIBLE);
                         endDateLbl.setVisibility(View.VISIBLE);
                         downArrow.setImageResource(R.drawable.ic_up_arrow);
                         courseIC.setVisibility(View.VISIBLE);
+                        courseListLayout.setVisibility(View.VISIBLE);
                     }
                 }
 
@@ -170,8 +187,10 @@ public class MainActivity extends AppCompatActivity {
 
             constraintSet.connect(courseIC.getId(),ConstraintSet.TOP,endDateLbl.getId(),ConstraintSet.BOTTOM,20);
             constraintSet.connect(courseIC.getId(),ConstraintSet.LEFT,endDateLbl.getId(),ConstraintSet.LEFT,20);
-
+            constraintSet.connect(courseListLayout.getId(),ConstraintSet.LEFT,endDateLbl.getId(),ConstraintSet.LEFT,20);
+            constraintSet.connect(courseListLayout.getId(),ConstraintSet.TOP,courseIC.getId(),ConstraintSet.BOTTOM,20);
             constraintSet.applyTo(newTermLayout);
+
         }
     }
 }
