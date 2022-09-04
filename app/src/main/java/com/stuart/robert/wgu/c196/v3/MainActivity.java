@@ -65,7 +65,9 @@ public class MainActivity extends AppCompatActivity {
                 Intent courseIntent = new Intent(this, CourseManager.class);
                 startActivity(courseIntent);
                 break;
-
+            case R.id.addAssessmentItem:
+                Intent assessmentIntent = new Intent(this, AssessmentManagement.class);
+                startActivity(assessmentIntent);
         }
 
         return super.onOptionsItemSelected(item);

@@ -15,6 +15,15 @@
         android:title="Add Term"
         android:visible="true"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/addAssessmentItem"
+        android:enabled="true"
+        android:icon="@drawable/ic_add_term"
+        android:iconTint="@color/purple_200"
+        android:orderInCategory="100"
+        android:title="Assessment Management"
+        android:visible="true"
+         />
 
 
 </menu>

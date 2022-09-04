@@ -17,4 +17,10 @@
         <item>Dropped</item>
         <item>Plan to Take</item>
     </string-array>
+
+    <string-array name="assessmentTypesStrings">
+        <item>Select an exam type</item>
+        <item>Objective</item>
+        <item>Performance</item>
+    </string-array>
 </resources>
