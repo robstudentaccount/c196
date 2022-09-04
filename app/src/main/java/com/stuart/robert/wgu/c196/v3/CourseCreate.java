@@ -1,8 +1,11 @@
 package com.stuart.robert.wgu.c196.v3;
 
+
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,5 +58,24 @@ public class CourseCreate extends AppCompatActivity {
                 finish();
             }
         });
+    }
+    public void shareClicked(View view) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setData(Uri.parse("smsto:"));  // This ensures only SMS apps respond
+        intent.putExtra(Intent.EXTRA_TEXT, courseNotesTextView.getText().toString());
+        intent.putExtra(Intent.EXTRA_TITLE, "Course Notes");
+        intent.setType("text/plain");
+
+        Intent shareIntent = Intent.createChooser(intent, null);
+        startActivity(shareIntent);
+
+
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+        startActivity(intent);
+
+
     }
 }
