@@ -2,12 +2,15 @@ package com.stuart.robert.wgu.c196.v3;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -18,6 +21,7 @@ import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -32,6 +36,7 @@ public class courseSection extends AppCompatActivity {
     private Term selectedTerm;
     private String selectedSectionID;
     private Course selectedSection;
+    private Assessment selectedAssessment;
 
     TextView startDateTxt;
     TextView endDateTxt;
@@ -45,11 +50,22 @@ public class courseSection extends AppCompatActivity {
     TextView courseNotes;
     ScrollView courseScrollView;
     TextView courseSelectTitle;
+    private LinearLayout courseSectionAssessmentLayout;
+    private static ArrayList<Assessment> tempAssessmentList = new ArrayList<>();
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        drawAssessments();
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_section);
+
         Intent intent = getIntent();
         selectedTermName = intent.getStringExtra("Term Name");
         selectedTerm = Terms.getTermByName(selectedTermName);
@@ -69,6 +85,7 @@ public class courseSection extends AppCompatActivity {
         courseNotes = (EditText) findViewById(R.id.courseNotesTextView);
         courseScrollView = (ScrollView) findViewById(R.id.scrollView2);
         courseSelectTitle = (TextView) findViewById(R.id.courseSectionSelectCourseTextView);
+        courseSectionAssessmentLayout = (LinearLayout) findViewById(R.id.courseSectionAssessmentLayout);
 
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -214,9 +231,65 @@ public class courseSection extends AppCompatActivity {
                     selectedCourse = course;
                     courseNotes.setText(course.getNotes());
                 }
+
+
+            });
+            drawAssessments();
+            rg.addView(courseRT);
+
+        }
+    }
+
+    private void drawAssessments() {
+        ConstraintLayout.LayoutParams assessmentParams = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT);
+
+        courseSectionAssessmentLayout.removeAllViews();
+        for (Assessment assessment : tempAssessmentList) {
+            LinearLayout row = new LinearLayout(this);
+            row.setOrientation(LinearLayout.HORIZONTAL);
+
+            TextView assessmentTV = new TextView(this);
+            assessmentTV.setText(assessment.getTitle() + " By: " + assessment.getEndDate());
+            assessmentTV.setLayoutParams(assessmentParams);
+            row.addView(assessmentTV);
+
+            ImageView readMore = new ImageView(this);
+            readMore.setImageResource(R.drawable.ic_read_more);
+            readMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    selectedAssessment = assessment;
+                    Intent intent = new Intent(getApplicationContext(), SectionAssessmentDialog.class);
+                    intent.putExtra("selectedAssessmentID", selectedAssessment.getTitle());
+                    startActivity(intent);
+                }
             });
 
-            rg.addView(courseRT);
+            row.addView(readMore);
+            courseSectionAssessmentLayout.addView(row);
         }
+
+    }
+
+    public void showSectionAssessmentDialog(View view) {
+        Intent intent = new Intent(this, SectionAssessmentDialog.class);
+        startActivity(intent);
+        drawAssessments();
+    }
+    public static void addAssessment(Assessment assessment) {
+        tempAssessmentList.add(assessment);
+    }
+    public static Assessment getAssessmentByID(String id) {
+        for (Assessment assessment : tempAssessmentList) {
+            if (assessment.getTitle().equals(id)) {
+                return assessment;
+            }
+        }
+        return null;
+    }
+    public static void deleteAssessment(Assessment assessment) {
+        tempAssessmentList.remove(assessment);
     }
 }
