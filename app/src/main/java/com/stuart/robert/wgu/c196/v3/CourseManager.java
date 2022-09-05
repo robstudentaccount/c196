@@ -75,7 +75,7 @@ public class CourseManager extends AppCompatActivity {
         ll.addView(rg);
         for(Course course : Courses.getCourses()) {
             RadioButton courseRB = new RadioButton(this);
-            courseRB.setText(course.name);
+            courseRB.setText(course.getName());
             courseRB.setId(View.generateViewId());
             courseRB.setOnClickListener(new View.OnClickListener() {
                 @Override

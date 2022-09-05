@@ -1,16 +1,18 @@
 package com.stuart.robert.wgu.c196.v3;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Course implements Serializable {
-    String name = "";
-    String startDate;
-    String endDate;
-    String status;
-    String instructorName;
-    String instructorTN;
-    String instructorEmail;
-    String notes;
+    private String name = "";
+    private String startDate;
+    private String endDate;
+    private String status;
+    private String instructorName;
+    private String instructorTN;
+    private String instructorEmail;
+    private String notes;
+    private ArrayList<Assessment> assessments = new ArrayList<>();
 
     public Course(String name, String notes) {
         this.name = name;
@@ -28,6 +30,7 @@ public class Course implements Serializable {
         this.instructorTN = instructorTN;
         this.instructorEmail = instructorEmail;
         this.notes = notes;
+        this.assessments.clear();
     }
 
     public String getName() {
@@ -90,5 +93,14 @@ public class Course implements Serializable {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+    public void addAssessment(Assessment assessment) {
+        this.assessments.add(assessment);
+    }
+    public ArrayList<Assessment> getAssessments() {
+        return this.assessments;
+    }
+    public void clearAssessments() {
+        this.assessments.clear();
     }
 }

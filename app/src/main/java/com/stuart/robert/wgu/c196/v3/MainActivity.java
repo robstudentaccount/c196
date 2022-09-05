@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
 
                 TextView courseTextView = new TextView(this);
                 courseTextView.setId(View.generateViewId());
-                courseTextView.setText("Section: " + section.getName() + " FROM: " + section.getStartDate() + " TO: " + section.endDate);
+                courseTextView.setText("Section: " + section.getName() + " FROM: " + section.getStartDate() + " TO: " + section.getEndDate());
 
                 ImageView sectionDetailsIC = new ImageView(this);
                 sectionDetailsIC.setImageResource(R.drawable.ic_read_more);

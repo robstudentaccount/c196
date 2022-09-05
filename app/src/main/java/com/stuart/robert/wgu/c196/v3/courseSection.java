@@ -66,6 +66,8 @@ public class courseSection extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_section);
 
+        tempAssessmentList.clear();
+
         Intent intent = getIntent();
         selectedTermName = intent.getStringExtra("Term Name");
         selectedTerm = Terms.getTermByName(selectedTermName);
@@ -95,7 +97,6 @@ public class courseSection extends AppCompatActivity {
             }
         });
 
-        drawCourses();
 
         if (selectedSection != null) {
             courseSelectTitle.setText("Course: " + selectedSection.getName());
@@ -125,8 +126,9 @@ public class courseSection extends AppCompatActivity {
                     System.out.println("STATUS: " + selectedSection.getStatus());
             }
 
-
-            System.out.println(selectedSection.getStartDate());
+          for (Assessment assessment: selectedSection.getAssessments()) {
+              tempAssessmentList.add(assessment);
+          }
         }
 
         View.OnClickListener calendarClick = new View.OnClickListener() {
@@ -185,24 +187,33 @@ public class courseSection extends AppCompatActivity {
                     selectedSection.setInstructorName(instructorNameTxt.getText().toString());
                     selectedSection.setInstructorTN(instructorTN.getText().toString());
                     selectedSection.setInstructorEmail(instructorEmail.getText().toString());
+                    selectedSection.clearAssessments();
+                    for (Assessment assessment : tempAssessmentList) {
+                        selectedSection.addAssessment(assessment);
+                    }
+
                 } else {
                     selectedCourse.setStartDate(startDateTxt.getText().toString());
                     selectedCourse.setEndDate(endDateTxt.getText().toString());
 
                     Course section = new Course(selectedCourse.getName(),
-                            selectedCourse.startDate, selectedCourse.endDate,
-                            selectedCourse.notes,
+                            selectedCourse.getStartDate(), selectedCourse.getEndDate(),
+                            selectedCourse.getNotes(),
                             sectionStatus.getSelectedItem().toString(),
                             instructorNameTxt.getText().toString(),
                             instructorTN.getText().toString(),
                             instructorEmail.getText().toString());
+
+                    for (Assessment assessment : tempAssessmentList) {
+                        section.addAssessment(assessment);
+                    }
                     selectedTerm.addSection(section);
                 }
                 finish();
             }
         });
 
-
+        drawCourses();
 
 
     }
