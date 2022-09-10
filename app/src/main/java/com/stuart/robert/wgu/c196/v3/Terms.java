@@ -29,4 +29,9 @@ public class Terms {
         }
         return null;
     }
+
+    public static void removeTerm(Term term) {
+        terms.remove(term);
+    }
+
 }

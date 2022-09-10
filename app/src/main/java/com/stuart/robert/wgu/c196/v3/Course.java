@@ -1,9 +1,21 @@
 package com.stuart.robert.wgu.c196.v3;
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import android.app.AlarmManager;
+import android.app.Application;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.AppCompatActivity;
 
-public class Course implements Serializable {
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
+
+public class Course extends AppCompatActivity  {
     private String name = "";
     private String startDate;
     private String endDate;
@@ -13,29 +25,33 @@ public class Course implements Serializable {
     private String instructorEmail;
     private String notes;
     private ArrayList<Assessment> assessments = new ArrayList<>();
+    private int notificationID = -1;
 
     public Course(String name, String notes) {
         this.name = name;
         this.notes = notes;
     }
-    public Course (String name, String startDate, String endDate, String notes,
-                   String status, String instructorName, String instructorTN,
-                   String instructorEmail)
-    {
+
+    public Course(String name, String startDate, String endDate, String notes,
+                  String status, String instructorName, String instructorTN,
+                  String instructorEmail
+                    ) {
         this.name = name;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.setStartDate(startDate);
+        this.setEndDate(endDate);
         this.status = status;
         this.instructorName = instructorName;
         this.instructorTN = instructorTN;
         this.instructorEmail = instructorEmail;
         this.notes = notes;
         this.assessments.clear();
+
     }
 
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -43,6 +59,7 @@ public class Course implements Serializable {
     public String getStartDate() {
         return startDate;
     }
+
     public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
@@ -94,12 +111,15 @@ public class Course implements Serializable {
     public void setNotes(String notes) {
         this.notes = notes;
     }
+
     public void addAssessment(Assessment assessment) {
         this.assessments.add(assessment);
     }
+
     public ArrayList<Assessment> getAssessments() {
         return this.assessments;
     }
+
     public void clearAssessments() {
         this.assessments.clear();
     }

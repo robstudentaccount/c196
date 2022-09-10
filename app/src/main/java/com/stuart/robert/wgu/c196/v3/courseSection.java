@@ -1,6 +1,9 @@
 package com.stuart.robert.wgu.c196.v3;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +24,8 @@ import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -52,6 +57,7 @@ public class courseSection extends AppCompatActivity {
     TextView courseSelectTitle;
     private LinearLayout courseSectionAssessmentLayout;
     private static ArrayList<Assessment> tempAssessmentList = new ArrayList<>();
+    String myFormat = "MM/dd/yy"; //In which you need put here
 
     @Override
     protected void onResume() {
@@ -65,6 +71,8 @@ public class courseSection extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_section);
+
+        sdf = new SimpleDateFormat(myFormat, Locale.US);
 
         tempAssessmentList.clear();
 
@@ -182,6 +190,25 @@ public class courseSection extends AppCompatActivity {
                 if (selectedSection != null) {
                     selectedSection.setStartDate(startDateTxt.getText().toString());
                     selectedSection.setEndDate(endDateTxt.getText().toString());
+
+                    Date future;
+                    Long trigger = null;
+                    try {
+                        future = sdf.parse(selectedSection.getEndDate());
+                        trigger =future.getTime();
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+
+                    }
+
+                    Intent intent=new Intent(getApplicationContext(),TermsBroadcastReceiver.class);
+                    intent.putExtra("key","Course " + selectedSection.getName() + " ends today!");
+                    PendingIntent sender=PendingIntent.getBroadcast(getApplicationContext(),MainActivity.numAlert++,intent,0);
+                    AlarmManager alarmManager=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP,trigger,sender);
+
+
                     selectedSection.setName(selectedCourse.getName());
                     selectedSection.setStatus(sectionStatus.getSelectedItem().toString());
                     selectedSection.setInstructorName(instructorNameTxt.getText().toString());
@@ -194,15 +221,37 @@ public class courseSection extends AppCompatActivity {
 
                 } else {
                     selectedCourse.setStartDate(startDateTxt.getText().toString());
+
+
                     selectedCourse.setEndDate(endDateTxt.getText().toString());
 
+
+                    Date future;
+                    Long trigger = null;
+                    try {
+                        future = sdf.parse(selectedCourse.getEndDate());
+                        trigger =future.getTime();
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+
+                    }
+
+                    Intent intent=new Intent(getApplicationContext(),TermsBroadcastReceiver.class);
+                    intent.putExtra("key","Course " + selectedCourse.getName() + " ends today!");
+                    PendingIntent sender=PendingIntent.getBroadcast(getApplicationContext(),MainActivity.numAlert++,intent,0);
+                    AlarmManager alarmManager=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP,trigger,sender);
+
                     Course section = new Course(selectedCourse.getName(),
-                            selectedCourse.getStartDate(), selectedCourse.getEndDate(),
+                            selectedCourse.getStartDate(),
+                            selectedCourse.getEndDate(),
                             selectedCourse.getNotes(),
                             sectionStatus.getSelectedItem().toString(),
                             instructorNameTxt.getText().toString(),
                             instructorTN.getText().toString(),
-                            instructorEmail.getText().toString());
+                            instructorEmail.getText().toString()
+                            );
 
                     for (Assessment assessment : tempAssessmentList) {
                         section.addAssessment(assessment);
