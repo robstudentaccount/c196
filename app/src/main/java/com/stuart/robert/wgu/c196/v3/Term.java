@@ -9,13 +9,13 @@ import java.util.ArrayList;
 public class Term {
     private int id;
     private String name;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private String startDate;
+    private String endDate;
     private ArrayList<Course> sections = new ArrayList<>();
     public Term(int id) {
         this.id = id;
     }
-    public Term(String name, LocalDate startDate, LocalDate endDate) {
+    public Term(String name, String startDate, String endDate) {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;

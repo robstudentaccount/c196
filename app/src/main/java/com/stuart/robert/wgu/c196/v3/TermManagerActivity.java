@@ -39,12 +39,17 @@ public class TermManagerActivity extends AppCompatActivity {
         LocalDate endDateDate = LocalDate.parse(endDateTxt.getText().toString(), formatter);
 
         // Create Term Object
-        Term newTerm = new Term(newTermName.getText().toString(), startDateDate, endDateDate);
+        Term newTerm = new Term(newTermName.getText().toString(), startDateTxt.getText().toString(), endDateTxt.getText().toString());
         Terms.addNewTerm(newTerm);
 
+        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+        boolean success = databaseHelper.addTerm(newTerm);
+        if (success == false) {
+            System.out.println("Unable to add to the database");
+        } else {
+            System.out.println("Added to the database");
+        }
         Intent intent = new Intent(this, com.stuart.robert.wgu.c196.v3.MainActivity.class);
-        //String message = newTermName.getText().toString();
-        //intent.putExtra(EXTRA_MESSAGE, newTerm);
         startActivity(intent);
     }
 }

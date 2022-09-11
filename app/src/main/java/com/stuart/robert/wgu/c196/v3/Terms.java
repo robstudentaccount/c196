@@ -18,6 +18,13 @@ public class Terms {
         terms.add(newTerm);
         //MainActivity.addTermToView(newTerm);
     }
+
+    public static void addTerms(ArrayList<Term> t) {
+        for (Term term : t) {
+           terms.add(term);
+        }
+    }
+
     public static ArrayList<Term> getTerms() {
         return terms;
     }

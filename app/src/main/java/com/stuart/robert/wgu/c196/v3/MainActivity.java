@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.SystemClock;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+        Terms.addTerms(databaseHelper.getTerms());
         drawTerms();
     }
 
@@ -55,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Term Manager");
 
+
+
+
         //Register Channel
         CharSequence name = getString(R.string.channel_name);
         String description = getString(R.string.channel_description);
@@ -65,9 +71,6 @@ public class MainActivity extends AppCompatActivity {
         notificationManager = getSystemService(NotificationManager.class);
         notificationManager.createNotificationChannel(channel);
 
-        Date future = new GregorianCalendar(2022,
-                1,
-                25).getTime();
        // scheduleNotification(buildNotification(), future.getTime());
 
     }
@@ -300,4 +303,5 @@ public Notification buildNotification() {
 
         }
     }
+
 }
