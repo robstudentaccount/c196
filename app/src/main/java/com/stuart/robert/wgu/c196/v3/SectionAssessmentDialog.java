@@ -1,6 +1,9 @@
 package com.stuart.robert.wgu.c196.v3;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -91,11 +94,21 @@ public class SectionAssessmentDialog extends AppCompatActivity {
                 if (selectedAssessment != null) {
                     selectedAssessment.setStartDate(assessmentStartDate.getText().toString());
                     selectedAssessment.setEndDate(assessmentEndDate.getText().toString());
+                    String endMSG = "Assessment " + selectedAssessment.getTitle() + " ends today!";
+                    String startMSG = "Assessment " + selectedAssessment.getTitle() + " starts today!";
+                    createNotification(assessmentEndDate.getText().toString(), endMSG, selectedAssessment.getEndNotificationID());
+                    createNotification(assessmentEndDate.getText().toString(), startMSG, selectedAssessment.getStartNotificationID());
+
                 } else {
                     Assessment a = new Assessment(pickedAssessment.getTitle(),
                             pickedAssessment.getType());
                     a.setStartDate(assessmentStartDate.getText().toString());
                     a.setEndDate(assessmentEndDate.getText().toString());
+                    String endMSG = "Assessment " + a.getTitle() + " ends today!";
+                    String startMSG = "Assessment " + a.getTitle() + " starts today!";
+                    createNotification(assessmentEndDate.getText().toString(), endMSG, a.getEndNotificationID());
+                    createNotification(assessmentEndDate.getText().toString(), startMSG, a.getStartNotificationID());
+
                     courseSection.addAssessment(a);
                 }
                 finish();
@@ -150,6 +163,25 @@ public class SectionAssessmentDialog extends AppCompatActivity {
         };
         assessmentStartDate.setOnClickListener(calendarClick);
         assessmentEndDate.setOnClickListener(calendarClick);
+    }
+
+    private void createNotification(String date, String msg, int id) {
+        // End Date Notification
+        Date future;
+        Long trigger = null;
+        try {
+            future = sdf.parse(date);
+            trigger =future.getTime();
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Intent intent=new Intent(getApplicationContext(),TermsBroadcastReceiver.class);
+        intent.putExtra("key",msg);
+        PendingIntent sender=PendingIntent.getBroadcast(getApplicationContext(),id,intent,0);
+        AlarmManager alarmManager=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,trigger,sender);
     }
 
 }

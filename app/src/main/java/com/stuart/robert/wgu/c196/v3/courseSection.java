@@ -202,11 +202,10 @@ public class courseSection extends AppCompatActivity {
 
                     }
 
-                    Intent intent=new Intent(getApplicationContext(),TermsBroadcastReceiver.class);
-                    intent.putExtra("key","Course " + selectedSection.getName() + " ends today!");
-                    PendingIntent sender=PendingIntent.getBroadcast(getApplicationContext(),MainActivity.numAlert++,intent,0);
-                    AlarmManager alarmManager=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                    alarmManager.set(AlarmManager.RTC_WAKEUP,trigger,sender);
+                    String endMsg = "Section " + selectedSection.getName() + " ends today!";
+                    String startMsg = "Section " + selectedSection.getName() + " starts today!";
+                    createNotification(selectedSection.getEndDate(), endMsg, selectedSection.getEndNotificationID());
+                    createNotification(selectedSection.getStartDate(), startMsg, selectedSection.getStartNotificationID());
 
 
                     selectedSection.setName(selectedCourse.getName());
@@ -221,28 +220,7 @@ public class courseSection extends AppCompatActivity {
 
                 } else {
                     selectedCourse.setStartDate(startDateTxt.getText().toString());
-
-
                     selectedCourse.setEndDate(endDateTxt.getText().toString());
-
-
-                    Date future;
-                    Long trigger = null;
-                    try {
-                        future = sdf.parse(selectedCourse.getEndDate());
-                        trigger =future.getTime();
-
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-
-                    }
-
-                    Intent intent=new Intent(getApplicationContext(),TermsBroadcastReceiver.class);
-                    intent.putExtra("key","Course " + selectedCourse.getName() + " ends today!");
-                    PendingIntent sender=PendingIntent.getBroadcast(getApplicationContext(),MainActivity.numAlert++,intent,0);
-                    AlarmManager alarmManager=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                    alarmManager.set(AlarmManager.RTC_WAKEUP,trigger,sender);
-
                     Course section = new Course(selectedCourse.getName(),
                             selectedCourse.getStartDate(),
                             selectedCourse.getEndDate(),
@@ -252,11 +230,15 @@ public class courseSection extends AppCompatActivity {
                             instructorTN.getText().toString(),
                             instructorEmail.getText().toString()
                             );
-
+                    String endMsg = "Section " + section.getName() + " ends today!";
+                    String startMsg = "Section " + section.getName() + " starts today!";
+                    createNotification(section.getEndDate(), endMsg, section.getEndNotificationID());
+                    createNotification(section.getStartDate(), startMsg, section.getStartNotificationID());
                     for (Assessment assessment : tempAssessmentList) {
                         section.addAssessment(assessment);
                     }
                     selectedTerm.addSection(section);
+
                 }
                 finish();
             }
@@ -351,5 +333,24 @@ public class courseSection extends AppCompatActivity {
     }
     public static void deleteAssessment(Assessment assessment) {
         tempAssessmentList.remove(assessment);
+    }
+    private void createNotification(String date, String msg, int id) {
+
+        // End Date Notification
+        Date future;
+        Long trigger = null;
+        try {
+            future = sdf.parse(date);
+            trigger =future.getTime();
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Intent intent=new Intent(getApplicationContext(),TermsBroadcastReceiver.class);
+        intent.putExtra("key",msg);
+        PendingIntent sender=PendingIntent.getBroadcast(getApplicationContext(),id,intent,0);
+        AlarmManager alarmManager=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,trigger,sender);
     }
 }

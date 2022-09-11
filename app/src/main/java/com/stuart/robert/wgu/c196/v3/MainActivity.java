@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static NotificationChannel channel;
     public static NotificationManager notificationManager;
-    public static int numAlert;
+    public static int numAlert = 0;
 
     @Override
     protected void onStart() {

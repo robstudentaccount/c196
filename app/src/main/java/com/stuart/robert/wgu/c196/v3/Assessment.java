@@ -1,11 +1,35 @@
 package com.stuart.robert.wgu.c196.v3;
 
+import android.content.Intent;
+
 public class Assessment {
     private String title;
     private String type;
     private String startDate;
     private String endDate;
+    private int startNotificationID = -1;
+    private int endNotificationID = -1;
+
+    public int getStartNotificationID() {
+        return startNotificationID;
+    }
+
+    public void setStartNotificationID(int startNotificationID) {
+        this.startNotificationID = startNotificationID;
+    }
+
+    public int getEndNotificationID() {
+        return this.endNotificationID;
+    }
+
+    public void setEndNotificationID(int endNotificationID) {
+        this.endNotificationID = endNotificationID;
+    }
+
     public Assessment(String title, String type) {
+        this.startNotificationID = ++MainActivity.numAlert;
+        this.endNotificationID = ++MainActivity.numAlert;
+        System.out.println("End Notification ID " + Integer.toString(endNotificationID));
         this.title = title;
         this.type = type;
     }
@@ -31,6 +55,9 @@ public class Assessment {
     }
 
     public void setStartDate(String startDate) {
+        if (this.startNotificationID < 0) {
+            this.startNotificationID = ++MainActivity.numAlert;
+        }
         this.startDate = startDate;
     }
 
@@ -39,6 +66,9 @@ public class Assessment {
     }
 
     public void setEndDate(String endDate) {
+        if (this.endNotificationID < 0) {
+            this.endNotificationID = ++MainActivity.numAlert;
+        }
         this.endDate = endDate;
     }
 }

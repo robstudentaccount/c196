@@ -25,7 +25,24 @@ public class Course extends AppCompatActivity  {
     private String instructorEmail;
     private String notes;
     private ArrayList<Assessment> assessments = new ArrayList<>();
-    private int notificationID = -1;
+    private int startNotificationID = -1;
+    private int endNotificationID = -1;
+
+    public int getStartNotificationID() {
+        return startNotificationID;
+    }
+
+    public void setStartNotificationID(int startNotificationID) {
+        this.startNotificationID = startNotificationID;
+    }
+
+    public int getEndNotificationID() {
+        return endNotificationID;
+    }
+
+    public void setEndNotificationID(int endNotificationID) {
+        this.endNotificationID = endNotificationID;
+    }
 
     public Course(String name, String notes) {
         this.name = name;
@@ -45,6 +62,8 @@ public class Course extends AppCompatActivity  {
         this.instructorEmail = instructorEmail;
         this.notes = notes;
         this.assessments.clear();
+        this.startNotificationID = ++MainActivity.numAlert;
+        this.endNotificationID = ++MainActivity.numAlert;
 
     }
 
