@@ -3,6 +3,7 @@ package com.stuart.robert.wgu.c196.v3;
 import android.content.Intent;
 
 public class Assessment {
+    private int id;
     private String title;
     private String type;
     private String startDate;
@@ -27,6 +28,14 @@ public class Assessment {
     }
 
     public Assessment(String title, String type) {
+        this.startNotificationID = ++MainActivity.numAlert;
+        this.endNotificationID = ++MainActivity.numAlert;
+        System.out.println("End Notification ID " + Integer.toString(endNotificationID));
+        this.title = title;
+        this.type = type;
+    }
+    public Assessment(int id, String title, String type) {
+        this.id = id;
         this.startNotificationID = ++MainActivity.numAlert;
         this.endNotificationID = ++MainActivity.numAlert;
         System.out.println("End Notification ID " + Integer.toString(endNotificationID));
@@ -70,5 +79,13 @@ public class Assessment {
             this.endNotificationID = ++MainActivity.numAlert;
         }
         this.endDate = endDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

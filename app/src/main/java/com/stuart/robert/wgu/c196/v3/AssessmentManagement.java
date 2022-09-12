@@ -54,7 +54,7 @@ public class AssessmentManagement extends AppCompatActivity {
             public void onClick(View view) {
                 if (selectedAssessment != null) {
                     Intent intent = new Intent(AssessmentManagement.this, AssessmentCreate.class);
-                    intent.putExtra("selectedAssessmentID", selectedAssessment.getTitle());
+                    intent.putExtra("selectedAssessmentID", selectedAssessment.getId());
                     startActivity(intent);
                 } else {
                     assessmentSelectErr.show();

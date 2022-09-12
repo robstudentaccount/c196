@@ -7,15 +7,20 @@ public class Assessments {
     public static void addAssessment(Assessment assessment) {
         assessments.add(assessment);
     }
+    public static void addAssessments(ArrayList<Assessment> as) {
+        for (Assessment a : as) {
+            assessments.add(a);
+        }
+    }
     public static void removeAssessment(Assessment assessment) {
         assessments.remove(assessment);
     }
     public static ArrayList<Assessment> getAssessments () {
         return assessments;
     }
-    public static Assessment getAssessmentByID(String id) {
+    public static Assessment getAssessmentByID(int id) {
         for (Assessment assessment : assessments) {
-            if (assessment.getTitle().equals(id)) {
+            if (assessment.getId() == id) {
                 return assessment;
             }
         }

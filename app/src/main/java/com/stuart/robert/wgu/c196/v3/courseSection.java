@@ -43,18 +43,18 @@ public class courseSection extends AppCompatActivity {
     private Course selectedSection;
     private Assessment selectedAssessment;
 
-    TextView startDateTxt;
-    TextView endDateTxt;
-    Button cancelBtn;
-    Button addBtn;
-    Spinner sectionStatus;
-    Button deleteBtn;
-    TextView instructorNameTxt;
-    TextView instructorTN;
-    TextView instructorEmail;
-    TextView courseNotes;
-    ScrollView courseScrollView;
-    TextView courseSelectTitle;
+    private TextView startDateTxt;
+    private TextView endDateTxt;
+    private Button cancelBtn;
+    private Button addBtn;
+    private Spinner sectionStatus;
+    private Button deleteBtn;
+    private TextView instructorNameTxt;
+    private TextView instructorTN;
+    private TextView instructorEmail;
+    private TextView courseNotes;
+    private ScrollView courseScrollView;
+    private TextView courseSelectTitle;
     private LinearLayout courseSectionAssessmentLayout;
     private static ArrayList<Assessment> tempAssessmentList = new ArrayList<>();
     String myFormat = "MM/dd/yy"; //In which you need put here
@@ -187,6 +187,7 @@ public class courseSection extends AppCompatActivity {
                     return;
                 }
 
+                DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
                 if (selectedSection != null) {
                     selectedSection.setStartDate(startDateTxt.getText().toString());
                     selectedSection.setEndDate(endDateTxt.getText().toString());
@@ -238,6 +239,7 @@ public class courseSection extends AppCompatActivity {
                         section.addAssessment(assessment);
                     }
                     selectedTerm.addSection(section);
+                    databaseHelper.addSection(section, selectedTerm.getId(), selectedCourse.getId());
 
                 }
                 finish();

@@ -52,7 +52,10 @@ public class CourseManager extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (selectedCourse != null) {
+                    DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+                    databaseHelper.deleteCourse(selectedCourse);
                     Courses.removeCourses(selectedCourse);
+                    selectedCourse = null;
                     drawCourses();
                 } else {
                     NO_SELECTED_COURSE_TOAST.show();
@@ -60,6 +63,7 @@ public class CourseManager extends AppCompatActivity {
 
             }
         });
+        drawCourses();
     }
 
     @Override

@@ -44,6 +44,9 @@ public class TermManagerActivity extends AppCompatActivity {
 
         DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
         boolean success = databaseHelper.addTerm(newTerm);
+
+        System.out.println("New term ID " + String.valueOf(newTerm.getId()));
+
         if (success == false) {
             System.out.println("Unable to add to the database");
         } else {

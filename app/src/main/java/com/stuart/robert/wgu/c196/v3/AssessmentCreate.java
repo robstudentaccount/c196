@@ -20,7 +20,7 @@ public class AssessmentCreate extends AppCompatActivity {
         setContentView(R.layout.activity_assessment_create);
 
         Intent intent = getIntent();
-        String getSelectedAssessmentID = intent.getStringExtra("selectedAssessmentID");
+        int getSelectedAssessmentID = intent.getIntExtra("selectedAssessmentID", -1);
         selectedAssessment = Assessments.getAssessmentByID(getSelectedAssessmentID);
 
 
@@ -49,12 +49,15 @@ public class AssessmentCreate extends AppCompatActivity {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
                 if (selectedAssessment != null) {
                     selectedAssessment.setTitle(assessmentNameTextView.getText().toString());
                     selectedAssessment.setType(assessmentTypeSpinner.getSelectedItem().toString());
+                    databaseHelper.updateAssessment(selectedAssessment);
                 } else {
                     Assessment newAssessment = new Assessment(assessmentNameTextView.getText().toString()
                             , assessmentTypeSpinner.getSelectedItem().toString());
+                    databaseHelper.addAssessment(newAssessment);
                     Assessments.addAssessment(newAssessment);
                 }
                 finish();

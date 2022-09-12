@@ -25,4 +25,10 @@ public class Courses {
     public static void removeCourses(Course course) {
         courses.remove(course);
     }
+    public static void addCourses(ArrayList<Course> cs) {
+        for (Course c: cs) {
+            courses.add(c);
+        }
+    }
+
 }

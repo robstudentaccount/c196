@@ -36,6 +36,14 @@ public class Terms {
         }
         return null;
     }
+    public static Term getTermByID(int id) {
+        for (Term term: terms) {
+            if (term.getId() == id) {
+                return term;
+            }
+        }
+        return null;
+    }
 
     public static void removeTerm(Term term) {
         terms.remove(term);

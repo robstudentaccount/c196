@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class Course extends AppCompatActivity  {
+    private int id;
+    private int sectionID;
+    private int termID;
     private String name = "";
     private String startDate;
     private String endDate;
@@ -48,6 +51,11 @@ public class Course extends AppCompatActivity  {
         this.name = name;
         this.notes = notes;
     }
+    public Course(int id, String name, String notes) {
+        this.id = id;
+        this.name = name;
+        this.notes = notes;
+    }
 
     public Course(String name, String startDate, String endDate, String notes,
                   String status, String instructorName, String instructorTN,
@@ -64,7 +72,26 @@ public class Course extends AppCompatActivity  {
         this.assessments.clear();
         this.startNotificationID = ++MainActivity.numAlert;
         this.endNotificationID = ++MainActivity.numAlert;
-
+    }
+    public Course(int sectionID, int termID, int courseID, String name,
+                  String startDate,
+                  String endDate, String notes, String status,
+                  String instructorName, String instructorTN,
+                  String instructorEmail) {
+        this.sectionID = sectionID;
+        this.termID = termID;
+        this.id = courseID;
+        this.name = name;
+        this.setStartDate(startDate);
+        this.setEndDate(endDate);
+        this.status = status;
+        this.instructorName = instructorName;
+        this.instructorTN = instructorTN;
+        this.instructorEmail = instructorEmail;
+        this.notes = notes;
+        this.assessments.clear();
+        this.startNotificationID = ++MainActivity.numAlert;
+        this.endNotificationID = ++MainActivity.numAlert;
     }
 
     public String getName() {
@@ -141,5 +168,20 @@ public class Course extends AppCompatActivity  {
 
     public void clearAssessments() {
         this.assessments.clear();
+    }
+
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getTermID() {
+        return termID;
+    }
+
+    public void setTermID(int termID) {
+        this.termID = termID;
     }
 }

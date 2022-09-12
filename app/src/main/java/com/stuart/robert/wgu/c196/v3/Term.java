@@ -20,6 +20,12 @@ public class Term {
         this.startDate = startDate;
         this.endDate = endDate;
     }
+    public Term(String name, String startDate, String endDate, int id) {
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.id = id;
+    }
     public String getDisplayName() {
         return this.name;
     }
@@ -46,4 +52,13 @@ public class Term {
     public ArrayList<Course> getSections () {
         return sections;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
 }

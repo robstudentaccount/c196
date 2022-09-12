@@ -39,15 +39,17 @@ public class CourseCreate extends AppCompatActivity {
         addCourseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
                 if (selectedCourse == null) {
-                    Courses.addCourse(new Course(courseName.getText().toString(), courseNotesTextView.getText().toString()));
-                    finish();
+                    Course newCourse = new Course(courseName.getText().toString(), courseNotesTextView.getText().toString());
+                    databaseHelper.addCourse(newCourse);
+                    Courses.addCourse(newCourse);
                 } else {
                     selectedCourse.setName(courseName.getText().toString());
                     selectedCourse.setNotes(courseNotesTextView.getText().toString());
-                    finish();
+                    databaseHelper.updateCourse(selectedCourse);
                 }
-
+                finish();
             }
         });
 
@@ -68,8 +70,6 @@ public class CourseCreate extends AppCompatActivity {
 
         Intent shareIntent = Intent.createChooser(intent, null);
         startActivity(shareIntent);
-
-
 
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);

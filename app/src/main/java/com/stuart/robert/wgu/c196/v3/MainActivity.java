@@ -43,7 +43,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
-        Terms.addTerms(databaseHelper.getTerms());
+        if (Terms.getTerms().size() == 0) {
+            Terms.addTerms(databaseHelper.getTerms());
+            for (Course section : databaseHelper.getSections()) {
+                Term term = Terms.getTermByID(section.getTermID());
+                term.addSection(section);
+            }
+        }
+        if (Courses.getCourses().size() == 0) {
+            Courses.addCourses(databaseHelper.getCourses());
+        }
+        if (Assessments.getAssessments().size() == 0) {
+            Assessments.addAssessments(databaseHelper.getAssessments());
+        }
         drawTerms();
     }
 
@@ -243,6 +255,8 @@ public Notification buildNotification() {
                        Toast toast = Toast.makeText(getApplicationContext(), "You must remove all courses before you can delete a term.", Toast.LENGTH_SHORT);
                        toast.show();
                     } else {
+                        DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+                        databaseHelper.deleteTerm(term);
                         Terms.removeTerm(term);
                         drawTerms();
                     }
