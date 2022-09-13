@@ -195,16 +195,6 @@ public class courseSection extends AppCompatActivity {
                     selectedSection.setStartDate(startDateTxt.getText().toString());
                     selectedSection.setEndDate(endDateTxt.getText().toString());
 
-                    Date future;
-                    Long trigger = null;
-                    try {
-                        future = sdf.parse(selectedSection.getEndDate());
-                        trigger =future.getTime();
-
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-
-                    }
 
                     String endMsg = "Section " + selectedSection.getName() + " ends today!";
                     String startMsg = "Section " + selectedSection.getName() + " starts today!";
@@ -218,6 +208,9 @@ public class courseSection extends AppCompatActivity {
                     selectedSection.setInstructorTN(instructorTN.getText().toString());
                     selectedSection.setInstructorEmail(instructorEmail.getText().toString());
                     selectedSection.clearAssessments();
+
+                    databaseHelper.deleteSectionAssessments(selectedSection.getSectionID());
+
                     for (Assessment assessment : tempAssessmentList) {
                         selectedSection.addAssessment(assessment);
                         databaseHelper.addSectionAssessment(selectedSection.getSectionID(), assessment);
@@ -314,6 +307,7 @@ public class courseSection extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), SectionAssessmentDialog.class);
                     intent.putExtra("selectedAssessmentID", selectedAssessment.getTitle());
                     intent.putExtra("selectedSectionID", selectedSection.getSectionID());
+                    intent.putExtra("selectedSectionAssessmentID", selectedAssessment.getSectionAssessmentID());
                     startActivity(intent);
                 }
             });
@@ -326,7 +320,7 @@ public class courseSection extends AppCompatActivity {
 
     public void showSectionAssessmentDialog(View view) {
         Intent intent = new Intent(this, SectionAssessmentDialog.class);
-        //intent.putExtra("selectedSectionID", selectedSection.getSectionID());
+        //intent.putExtra("selectedSectionAssessmentID", selectedSection.getSectionID());
         startActivity(intent);
         drawAssessments();
     }
@@ -341,6 +335,16 @@ public class courseSection extends AppCompatActivity {
         }
         return null;
     }
+
+    public static Assessment getAssessmentBySectionAssessmentID(int id) {
+        for (Assessment assessment : tempAssessmentList) {
+            if (assessment.getSectionAssessmentID() == id) {
+                return assessment;
+            }
+        }
+        return null;
+    }
+
     public static void deleteAssessment(Assessment assessment) {
         tempAssessmentList.remove(assessment);
     }

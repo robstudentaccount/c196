@@ -59,7 +59,8 @@ public class SectionAssessmentDialog extends AppCompatActivity {
         assessmentScrollView = (ScrollView) findViewById(R.id.assessmentScrollView);
 
         String selectedAssessmentID = intent.getStringExtra("selectedAssessmentID");
-        selectedAssessment = courseSection.getAssessmentByID(selectedAssessmentID);
+        int selectedSectionAssessmentID = intent.getIntExtra("selectedSectionAssessmentID", -1);
+        selectedAssessment = courseSection.getAssessmentBySectionAssessmentID(selectedSectionAssessmentID);
 
         if (selectedAssessmentID != null) {
             title.setText("Assessment: " + selectedAssessment.getTitle());

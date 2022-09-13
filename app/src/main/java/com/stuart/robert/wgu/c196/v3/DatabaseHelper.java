@@ -355,5 +355,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return assessments;
     }
+    public boolean deleteSectionAssessments(int sectionID) {
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "DELETE FROM section_assessment " +
+                "WHERE section_id = " + sectionID;
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }
