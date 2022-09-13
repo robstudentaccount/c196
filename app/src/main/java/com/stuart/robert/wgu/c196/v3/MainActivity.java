@@ -46,8 +46,12 @@ public class MainActivity extends AppCompatActivity {
         if (Terms.getTerms().size() == 0) {
             Terms.addTerms(databaseHelper.getTerms());
             for (Course section : databaseHelper.getSections()) {
+                System.out.println("Section Name: " + section.getName());
                 Term term = Terms.getTermByID(section.getTermID());
                 term.addSection(section);
+                for (Assessment assessment : databaseHelper.getSectionAssessments(section.getSectionID())) {
+                    section.addAssessment(assessment);
+                }
             }
         }
         if (Courses.getCourses().size() == 0) {
@@ -234,7 +238,7 @@ public Notification buildNotification() {
                     public void onClick(View view) {
                         Intent intent = new Intent(getApplicationContext(), courseSection.class);
                         intent.putExtra("Term Name", term.getDisplayName());
-                        intent.putExtra("SectionID", section.getName());
+                        intent.putExtra("SectionID", section.getSectionID());
                         startActivity(intent);
                     }
                 });

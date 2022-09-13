@@ -27,6 +27,7 @@ public class SectionAssessmentDialog extends AppCompatActivity {
     private DatePickerDialog.OnDateSetListener pickedDate;
     private final Calendar myCalendarStart = Calendar.getInstance();
     private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+    private int selectedSectionID;
 
     private RadioGroup rg;
     private Button cancelButton;
@@ -45,6 +46,8 @@ public class SectionAssessmentDialog extends AppCompatActivity {
         setContentView(R.layout.activity_section_assessment_dialog);
 
         Intent intent = getIntent();
+        selectedSectionID = intent.getIntExtra("selectedSectionID", -1);
+
 
         addButton = (Button) findViewById(R.id.assessmentSectionAddButton);
         cancelButton = (Button) findViewById(R.id.assessmentSectionCancelBtn);
@@ -104,11 +107,11 @@ public class SectionAssessmentDialog extends AppCompatActivity {
                             pickedAssessment.getType());
                     a.setStartDate(assessmentStartDate.getText().toString());
                     a.setEndDate(assessmentEndDate.getText().toString());
+                    a.setId(pickedAssessment.getId());
                     String endMSG = "Assessment " + a.getTitle() + " ends today!";
                     String startMSG = "Assessment " + a.getTitle() + " starts today!";
                     createNotification(assessmentEndDate.getText().toString(), endMSG, a.getEndNotificationID());
                     createNotification(assessmentEndDate.getText().toString(), startMSG, a.getStartNotificationID());
-
                     courseSection.addAssessment(a);
                 }
                 finish();

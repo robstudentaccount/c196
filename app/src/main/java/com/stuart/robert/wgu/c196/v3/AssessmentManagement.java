@@ -39,6 +39,8 @@ public class AssessmentManagement extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (selectedAssessment != null) {
+                    DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+                    databaseHelper.deleteAssessment(selectedAssessment);
                     Assessments.removeAssessment(selectedAssessment);
                     selectedAssessment = null;
                     drawAssessments();

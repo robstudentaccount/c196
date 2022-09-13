@@ -39,7 +39,7 @@ public class courseSection extends AppCompatActivity {
     private Course selectedCourse;
     private String selectedTermName;
     private Term selectedTerm;
-    private String selectedSectionID;
+    private int selectedSectionID;
     private Course selectedSection;
     private Assessment selectedAssessment;
 
@@ -79,8 +79,9 @@ public class courseSection extends AppCompatActivity {
         Intent intent = getIntent();
         selectedTermName = intent.getStringExtra("Term Name");
         selectedTerm = Terms.getTermByName(selectedTermName);
-        selectedSectionID = intent.getStringExtra("SectionID");
+        selectedSectionID = intent.getIntExtra("SectionID", -1);
         selectedSection = selectedTerm.getSectionByID(selectedSectionID);
+
 
         startDateTxt = (TextView) findViewById(R.id.startDateTxt);
         endDateTxt = (TextView) findViewById(R.id.endDateText);
@@ -100,6 +101,8 @@ public class courseSection extends AppCompatActivity {
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
+                databaseHelper.deleteSection(selectedSection);
                 selectedTerm.removeSection(selectedSection);
                 finish();
             }
@@ -217,8 +220,9 @@ public class courseSection extends AppCompatActivity {
                     selectedSection.clearAssessments();
                     for (Assessment assessment : tempAssessmentList) {
                         selectedSection.addAssessment(assessment);
+                        databaseHelper.addSectionAssessment(selectedSection.getSectionID(), assessment);
                     }
-
+                    databaseHelper.updateSection(selectedSection);
                 } else {
                     selectedCourse.setStartDate(startDateTxt.getText().toString());
                     selectedCourse.setEndDate(endDateTxt.getText().toString());
@@ -240,7 +244,9 @@ public class courseSection extends AppCompatActivity {
                     }
                     selectedTerm.addSection(section);
                     databaseHelper.addSection(section, selectedTerm.getId(), selectedCourse.getId());
-
+                    for (Assessment assessment : tempAssessmentList) {
+                        databaseHelper.addSectionAssessment(section.getSectionID(), assessment);
+                    }
                 }
                 finish();
             }
@@ -307,6 +313,7 @@ public class courseSection extends AppCompatActivity {
                     selectedAssessment = assessment;
                     Intent intent = new Intent(getApplicationContext(), SectionAssessmentDialog.class);
                     intent.putExtra("selectedAssessmentID", selectedAssessment.getTitle());
+                    intent.putExtra("selectedSectionID", selectedSection.getSectionID());
                     startActivity(intent);
                 }
             });
@@ -319,6 +326,7 @@ public class courseSection extends AppCompatActivity {
 
     public void showSectionAssessmentDialog(View view) {
         Intent intent = new Intent(this, SectionAssessmentDialog.class);
+        //intent.putExtra("selectedSectionID", selectedSection.getSectionID());
         startActivity(intent);
         drawAssessments();
     }

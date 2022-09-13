@@ -38,9 +38,9 @@ public class Term {
     public void addSection(Course course) {
         sections.add(course);
     }
-    public Course getSectionByID(String id) {
+    public Course getSectionByID(int id) {
         for (Course section: sections) {
-            if (section.getName().equals(id)) {
+            if (section.getSectionID() == id) {
                 return section;
             }
         }

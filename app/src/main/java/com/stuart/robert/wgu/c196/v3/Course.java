@@ -184,4 +184,12 @@ public class Course extends AppCompatActivity  {
     public void setTermID(int termID) {
         this.termID = termID;
     }
+
+    public int getSectionID() {
+        return sectionID;
+    }
+
+    public void setSectionID(int sectionID) {
+        this.sectionID = sectionID;
+    }
 }

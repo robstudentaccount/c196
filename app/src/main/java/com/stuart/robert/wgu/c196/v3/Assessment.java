@@ -10,6 +10,7 @@ public class Assessment {
     private String endDate;
     private int startNotificationID = -1;
     private int endNotificationID = -1;
+    private int sectionAssessmentID;
 
     public int getStartNotificationID() {
         return startNotificationID;
@@ -87,5 +88,13 @@ public class Assessment {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getSectionAssessmentID() {
+        return sectionAssessmentID;
+    }
+
+    public void setSectionAssessmentID(int sectionAssessmentID) {
+        this.sectionAssessmentID = sectionAssessmentID;
     }
 }

@@ -51,6 +51,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ", instructor_email TEXT" +
                 ");";
         db.execSQL(createTablesStatement);
+
+        // Section Assessment Table
+        createTablesStatement = "CREATE TABLE " +
+                "section_assessment (ID INTEGER PRIMARY KEY AUTOINCREMENT" +
+                ", section_id INTEGER" +
+                ", assessment_id INTEGER" +
+                ", start_date TEXT" +
+                ", end_date TEXT" +
+                ");";
+        db.execSQL(createTablesStatement);
     }
 
     @Override
@@ -167,6 +177,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put("name", assessment.getTitle());
         cv.put("assessment_type", assessment.getType());
         long insert = db.insert("assessments", null, cv);
+        assessment.setId((int) insert);
         if (insert == -1) {
             return false;
         } else {
@@ -205,6 +216,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return false;
         }
     }
+    public boolean deleteAssessment(Assessment assessment) {
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "DELETE FROM assessments WHERE id = " + assessment.getId();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public boolean addSection(Course section, int termID, int courseID) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -218,7 +240,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put("instructor_phone", section.getInstructorTN());
         cv.put("instructor_email", section.getInstructorEmail());
         long insert = db.insert("sections", null, cv);
-        section.setId((int) insert);
+        section.setSectionID((int) insert);
         if (insert == -1) {
             return false;
         } else {
@@ -256,4 +278,82 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return sections;
     }
+    public boolean updateSection(Course section) {
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "UPDATE sections " +
+                "SET name = '" + section.getName() + "'" +
+                ", start_date = '" + section.getStartDate() + "'" +
+                ", end_date = '" + section.getEndDate() + "'" +
+                ", status = '" + section.getStatus() + "'" +
+                ", instructor_name = '" + section.getInstructorName() + "'" +
+                ", instructor_phone = '" + section.getInstructorTN() + "'" +
+                ", instructor_email = '" + section.getInstructorEmail() + "'" +
+                "WHERE id = " + section.getSectionID();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public boolean deleteSection(Course section) {
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "DELETE FROM sections WHERE id = " + section.getId();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public boolean addSectionAssessment(int sectionID, Assessment assessment) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("section_id", sectionID);
+        cv.put("assessment_id", assessment.getId());
+        System.out.println("Heeey: " + String.valueOf(assessment.getId()));
+        cv.put("start_date", assessment.getStartDate());
+        cv.put("end_date", assessment.getEndDate());
+        long insert = db.insert("section_assessment", null, cv);
+        assessment.setSectionAssessmentID((int) insert);
+        if (insert == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    public ArrayList<Assessment> getSectionAssessments(int sectionID) {
+        ArrayList<Assessment> assessments = new ArrayList<>();
+        String query = "SELECT sa.id, sa.section_id, sa.assessment_id, sa.start_date, sa.end_date " +
+                ",a.name, a.assessment_type" +
+                " FROM section_assessment sa " +
+                "JOIN assessments a ON a.id = sa.assessment_id " +
+                "WHERE section_id = " + sectionID;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query,null);
+        if (cursor.moveToFirst()) {
+            // loop through result and add them to return list.
+            do {
+                int id = cursor.getInt(0);
+                int section_id = cursor.getInt(1);
+                int assessment_id = cursor.getInt(2);
+                String start_date = cursor.getString(3);
+                String end_date = cursor.getString(4);
+                String assessmentTitle = cursor.getString(5);
+                String assessmentType = cursor.getString(6);
+                Assessment assessment = new Assessment(assessmentTitle, assessmentType);
+                assessment.setSectionAssessmentID(id);
+                assessment.setType(assessmentType);
+                assessment.setStartDate(start_date);
+                assessment.setEndDate(end_date);
+                assessment.setId(assessment_id);
+
+                assessments.add(assessment);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return assessments;
+    }
+
 }
