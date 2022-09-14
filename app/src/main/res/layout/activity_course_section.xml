@@ -8,11 +8,12 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="true"
+        android:overScrollMode="always"
         android:scrollbarAlwaysDrawVerticalTrack="true"
         android:scrollbarStyle="outsideInset"
         android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/courseSectionAddBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,12 +21,12 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="1500dp"
             android:orientation="vertical">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="749dp">
+                android:layout_height="wrap_content">
 
                 <EditText
                     android:id="@+id/endDateText"
@@ -197,13 +198,15 @@
                 <EditText
                     android:id="@+id/courseNotesTextView"
                     android:layout_width="0dp"
-                    android:layout_height="0dp"
+                    android:layout_height="50dp"
                     android:layout_marginBottom="100dp"
                     android:editable="false"
                     android:ems="10"
                     android:gravity="top|left"
                     android:inputType="none"
+                    android:scrollbarAlwaysDrawVerticalTrack="false"
                     android:scrollbars="vertical"
+                    app:layout_constrainedHeight="false"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -219,16 +222,33 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/courseNotesTextView" />
 
-                <LinearLayout
-                    android:id="@+id/courseSectionAssessmentLayout"
+                <ScrollView
+                    android:id="@+id/scrollview10"
                     android:layout_width="0dp"
-                    android:layout_height="50dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_height="75dp"
+                    android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:isScrollContainer="true"
                     android:orientation="vertical"
+                    android:scrollbarAlwaysDrawVerticalTrack="true"
+                    android:scrollbarStyle="outsideOverlay"
+                    android:scrollbars="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView5"></LinearLayout>
+                    app:layout_constraintTop_toBottomOf="@+id/textView5">
+
+
+                    <LinearLayout
+                        android:id="@+id/courseSectionAssessmentLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:scrollbarAlwaysDrawVerticalTrack="true"
+                        android:scrollbarStyle="outsideInset"
+                        android:scrollbars="vertical" />
+                </ScrollView>
 
                 <ImageView
                     android:id="@+id/imageView2"

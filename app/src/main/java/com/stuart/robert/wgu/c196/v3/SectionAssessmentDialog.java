@@ -104,6 +104,7 @@ public class SectionAssessmentDialog extends AppCompatActivity {
                     createNotification(assessmentEndDate.getText().toString(), startMSG, selectedAssessment.getStartNotificationID());
 
                 } else {
+                    System.out.println("CLICKED!!");
                     Assessment a = new Assessment(pickedAssessment.getTitle(),
                             pickedAssessment.getType());
                     a.setStartDate(assessmentStartDate.getText().toString());
@@ -113,7 +114,7 @@ public class SectionAssessmentDialog extends AppCompatActivity {
                     String startMSG = "Assessment " + a.getTitle() + " starts today!";
                     createNotification(assessmentEndDate.getText().toString(), endMSG, a.getEndNotificationID());
                     createNotification(assessmentEndDate.getText().toString(), startMSG, a.getStartNotificationID());
-                    courseSection.addAssessment(a);
+                    boolean b = courseSection.addAssessment(a);
                 }
                 finish();
             }

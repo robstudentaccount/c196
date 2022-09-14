@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -289,14 +290,18 @@ public class courseSection extends AppCompatActivity {
                 ConstraintLayout.LayoutParams.WRAP_CONTENT);
 
         courseSectionAssessmentLayout.removeAllViews();
+        //courseSectionAssessmentLayout.setLayoutParams(assessmentParams);
         for (Assessment assessment : tempAssessmentList) {
             LinearLayout row = new LinearLayout(this);
             row.setOrientation(LinearLayout.HORIZONTAL);
+            row.setLayoutParams(assessmentParams);
 
             TextView assessmentTV = new TextView(this);
             assessmentTV.setText(assessment.getTitle() + " By: " + assessment.getEndDate());
             assessmentTV.setLayoutParams(assessmentParams);
             row.addView(assessmentTV);
+            row.setLayoutParams(assessmentParams);
+
 
             ImageView readMore = new ImageView(this);
             readMore.setImageResource(R.drawable.ic_read_more);
@@ -324,8 +329,9 @@ public class courseSection extends AppCompatActivity {
         startActivity(intent);
         drawAssessments();
     }
-    public static void addAssessment(Assessment assessment) {
+    public static boolean addAssessment(Assessment assessment) {
         tempAssessmentList.add(assessment);
+        return true;
     }
     public static Assessment getAssessmentByID(String id) {
         for (Assessment assessment : tempAssessmentList) {
