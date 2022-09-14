@@ -49,6 +49,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ", instructor_name TEXT" +
                 ", instructor_phone TEXT" +
                 ", instructor_email TEXT" +
+                ", notification_start_id INTEGER" +
+                ", notification_end_id INTEGER" +
                 ");";
         db.execSQL(createTablesStatement);
 
@@ -59,6 +61,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ", assessment_id INTEGER" +
                 ", start_date TEXT" +
                 ", end_date TEXT" +
+                ", notification_start_id INTEGER" +
+                ", notification_end_id INTEGER" +
                 ");";
         db.execSQL(createTablesStatement);
     }
@@ -239,6 +243,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put("instructor_name", section.getInstructorName());
         cv.put("instructor_phone", section.getInstructorTN());
         cv.put("instructor_email", section.getInstructorEmail());
+        cv.put("notification_start_id", section.getStartNotificationID());
+        cv.put("notification_end_id", section.getEndNotificationID());
+
         long insert = db.insert("sections", null, cv);
         section.setSectionID((int) insert);
         if (insert == -1) {
@@ -251,8 +258,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ArrayList<Course> sections = new ArrayList<>();
         String query = "SELECT s.id, s.term_id, s.course_id, " +
                 "s.name,s.start_date,s.end_date,s.status,s.instructor_name," +
-                "s.instructor_phone,s.instructor_email,c.notes" +
+                "s.instructor_phone,s.instructor_email,c.notes," +
+                "notification_start_id, notification_end_id" +
                 " FROM sections s JOIN courses c ON c.id = s.course_id";
+
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query,null);
         if (cursor.moveToFirst()) {
@@ -269,8 +278,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String instructorTN = cursor.getString(8);
                 String instructorEmail = cursor.getString(9);
                 String notes = cursor.getString(10);
+                int startNotificationID = cursor.getInt(11);;
+                int endNotificationID = cursor.getInt(12);
                 Course section = new Course(id, termID, courseID, name, start_date, end_date,
                         notes, status, instructorName,instructorTN,instructorEmail);
+                section.setStartNotificationID(startNotificationID);
+                section.setEndNotificationID(endNotificationID);
                 sections.add(section);
             } while (cursor.moveToNext());
         }
@@ -314,6 +327,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         System.out.println("Heeey: " + String.valueOf(assessment.getId()));
         cv.put("start_date", assessment.getStartDate());
         cv.put("end_date", assessment.getEndDate());
+        cv.put("end_date", assessment.getEndDate());
+        cv.put("notification_start_id", assessment.getStartNotificationID());
+        cv.put("notification_end_id", assessment.getEndNotificationID());
         long insert = db.insert("section_assessment", null, cv);
         assessment.setSectionAssessmentID((int) insert);
         if (insert == -1) {
@@ -325,7 +341,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<Assessment> getSectionAssessments(int sectionID) {
         ArrayList<Assessment> assessments = new ArrayList<>();
         String query = "SELECT sa.id, sa.section_id, sa.assessment_id, sa.start_date, sa.end_date " +
-                ",a.name, a.assessment_type" +
+                ",a.name, a.assessment_type, notification_start_id, notification_end_id" +
                 " FROM section_assessment sa " +
                 "JOIN assessments a ON a.id = sa.assessment_id " +
                 "WHERE section_id = " + sectionID;
@@ -341,13 +357,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String end_date = cursor.getString(4);
                 String assessmentTitle = cursor.getString(5);
                 String assessmentType = cursor.getString(6);
+                int startNotificationID = cursor.getInt(7);
+                int endNotificationID = cursor.getInt(8);
                 Assessment assessment = new Assessment(assessmentTitle, assessmentType);
                 assessment.setSectionAssessmentID(id);
                 assessment.setType(assessmentType);
                 assessment.setStartDate(start_date);
                 assessment.setEndDate(end_date);
                 assessment.setId(assessment_id);
-
+                assessment.setStartNotificationID(startNotificationID);
+                assessment.setEndNotificationID(endNotificationID);
                 assessments.add(assessment);
             } while (cursor.moveToNext());
         }
@@ -366,5 +385,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return false;
         }
     }
+    public boolean deleteSectionAssessment(int sectionAssessmentID) {
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "DELETE FROM section_assessment " +
+                "WHERE id = " + sectionAssessmentID;
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public int getBiggestNotificationID() {
+        int maxID = -1;
 
+        String asQuery = "SELECT MAX(notification_start_id, notification_end_id)" +
+                "FROM section_assessment";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(asQuery,null);
+        if (cursor.moveToFirst()) {
+            // loop through result and add them to return list.
+                int m1 = cursor.getInt(0);
+                if (m1 > maxID) {
+                    maxID = m1;
+                }
+        }
+
+        String aQuery = "SELECT MAX(notification_start_id, notification_end_id)" +
+                "FROM sections";
+        db = this.getReadableDatabase();
+        cursor = db.rawQuery(asQuery,null);
+        if (cursor.moveToFirst()) {
+            // loop through result and add them to return list.
+            int m2 = cursor.getInt(0);
+            if (m2 > maxID) {
+                maxID = m2;
+            }
+        }
+        return maxID;
+    }
 }

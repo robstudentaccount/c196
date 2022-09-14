@@ -192,4 +192,5 @@ public class Course extends AppCompatActivity  {
     public void setSectionID(int sectionID) {
         this.sectionID = sectionID;
     }
+
 }

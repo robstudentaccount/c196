@@ -104,7 +104,9 @@ public class courseSection extends AppCompatActivity {
             public void onClick(View view) {
                 DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
                 databaseHelper.deleteSection(selectedSection);
+                databaseHelper.deleteSectionAssessments(selectedSection.getSectionID());
                 selectedTerm.removeSection(selectedSection);
+                selectedSection = null;
                 finish();
             }
         });

@@ -125,35 +125,38 @@
                     android:id="@+id/textView13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginBottom="18dp"
                     android:text="Course Notes:"
-                    app:layout_constraintTop_toBottomOf="@+id/instructorEmailTextView"
-                    tools:layout_editor_absoluteX="7dp" />
+                    app:layout_constraintBottom_toTopOf="@+id/courseNotesTextView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/instructorPhoneNumberTextView" />
 
                 <EditText
                     android:id="@+id/instructorEmailTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:ems="10"
                     android:inputType="textPersonName"
                     android:phoneNumber="true"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView10"
-                    app:layout_constraintTop_toBottomOf="@+id/instructorPhoneNumberTextView" />
+                    app:layout_constraintStart_toStartOf="@+id/instructorNameTxt"
+                    app:layout_constraintTop_toBottomOf="@+id/instructorNameTxt" />
 
                 <EditText
                     android:id="@+id/instructorPhoneNumberTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:ems="10"
                     android:inputType="phone"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/textView11"
-                    app:layout_constraintTop_toBottomOf="@+id/instructorNameTxt" />
+                    app:layout_constraintStart_toStartOf="@+id/instructorEmailTextView"
+                    app:layout_constraintTop_toBottomOf="@+id/instructorEmailTextView" />
 
                 <TextView
                     android:id="@+id/textView9"
@@ -167,17 +170,23 @@
                     android:id="@+id/textView10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
                     android:text="Instructor Phone Number:"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/instructorEmailTextView"
-                    app:layout_constraintEnd_toEndOf="@+id/textView11" />
+                    app:layout_constraintBaseline_toBaselineOf="@+id/instructorPhoneNumberTextView"
+                    app:layout_constraintEnd_toEndOf="@+id/textView11"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
                     android:id="@+id/textView11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
                     android:text="Instructor Email:"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/instructorPhoneNumberTextView"
-                    app:layout_constraintEnd_toEndOf="@+id/textView9" />
+                    app:layout_constraintBaseline_toBaselineOf="@+id/instructorEmailTextView"
+                    app:layout_constraintEnd_toStartOf="@+id/instructorNameTxt"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
                     android:id="@+id/textView8"

@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         if (Assessments.getAssessments().size() == 0) {
             Assessments.addAssessments(databaseHelper.getAssessments());
         }
+        numAlert = databaseHelper.getBiggestNotificationID();
         drawTerms();
     }
 
@@ -261,6 +262,10 @@ public Notification buildNotification() {
                     } else {
                         DatabaseHelper databaseHelper = new DatabaseHelper(getApplicationContext());
                         databaseHelper.deleteTerm(term);
+                        for (Course section : term.getSections()) {
+                            databaseHelper.deleteSectionAssessments(section.getSectionID());
+                            databaseHelper.deleteSection(section);
+                        }
                         Terms.removeTerm(term);
                         drawTerms();
                     }
