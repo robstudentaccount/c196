@@ -51,6 +51,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ", instructor_email TEXT" +
                 ", notification_start_id INTEGER" +
                 ", notification_end_id INTEGER" +
+                ", notification_start_active INTEGER" +
+                ", notification_end_active INTEGER" +
                 ");";
         db.execSQL(createTablesStatement);
 
@@ -245,6 +247,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put("instructor_email", section.getInstructorEmail());
         cv.put("notification_start_id", section.getStartNotificationID());
         cv.put("notification_end_id", section.getEndNotificationID());
+        cv.put("notification_start_active", section.getNotificationStartActive());
+        cv.put("notification_end_active", section.getNotificationEndActive());
 
         long insert = db.insert("sections", null, cv);
         section.setSectionID((int) insert);
@@ -259,7 +263,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String query = "SELECT s.id, s.term_id, s.course_id, " +
                 "s.name,s.start_date,s.end_date,s.status,s.instructor_name," +
                 "s.instructor_phone,s.instructor_email,c.notes," +
-                "notification_start_id, notification_end_id" +
+                "notification_start_id, notification_end_id," +
+                "notification_start_active," +
+                "notification_end_active" +
                 " FROM sections s JOIN courses c ON c.id = s.course_id";
 
         SQLiteDatabase db = this.getReadableDatabase();
@@ -280,10 +286,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String notes = cursor.getString(10);
                 int startNotificationID = cursor.getInt(11);;
                 int endNotificationID = cursor.getInt(12);
+                int notificationStartActive = cursor.getInt(13);
+                int notificationEndActive = cursor.getInt(14);
                 Course section = new Course(id, termID, courseID, name, start_date, end_date,
                         notes, status, instructorName,instructorTN,instructorEmail);
                 section.setStartNotificationID(startNotificationID);
                 section.setEndNotificationID(endNotificationID);
+                section.setNotificationStartActive(notificationStartActive);
+                section.setNotificationEndActive(notificationEndActive);
                 sections.add(section);
             } while (cursor.moveToNext());
         }
@@ -301,6 +311,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ", instructor_name = '" + section.getInstructorName() + "'" +
                 ", instructor_phone = '" + section.getInstructorTN() + "'" +
                 ", instructor_email = '" + section.getInstructorEmail() + "'" +
+                ", notification_start_active = '" + section.getNotificationStartActive() + "'" +
+                ", notification_end_active = '" + section.getNotificationEndActive() + "'" +
                 "WHERE id = " + section.getSectionID();
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()) {

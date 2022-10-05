@@ -30,6 +30,9 @@ public class Course extends AppCompatActivity  {
     private ArrayList<Assessment> assessments = new ArrayList<>();
     private int startNotificationID = -1;
     private int endNotificationID = -1;
+    private int notificationStartActive = 0;
+    private int notificationEndActive = 0;
+
 
     public int getStartNotificationID() {
         return startNotificationID;
@@ -193,4 +196,23 @@ public class Course extends AppCompatActivity  {
         this.sectionID = sectionID;
     }
 
+    public void setAssessments(ArrayList<Assessment> assessments) {
+        this.assessments = assessments;
+    }
+
+    public int getNotificationStartActive() {
+        return notificationStartActive;
+    }
+
+    public void setNotificationStartActive(int notificationStartActive) {
+        this.notificationStartActive = notificationStartActive;
+    }
+
+    public int getNotificationEndActive() {
+        return notificationEndActive;
+    }
+
+    public void setNotificationEndActive(int notificationEndActive) {
+        this.notificationEndActive = notificationEndActive;
+    }
 }

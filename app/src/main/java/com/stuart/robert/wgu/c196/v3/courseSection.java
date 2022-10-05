@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -57,6 +58,8 @@ public class courseSection extends AppCompatActivity {
     private ScrollView courseScrollView;
     private TextView courseSelectTitle;
     private LinearLayout courseSectionAssessmentLayout;
+    private CheckBox courseStartNotification;
+    private CheckBox courseEndNotification;
     private static ArrayList<Assessment> tempAssessmentList = new ArrayList<>();
     String myFormat = "MM/dd/yy"; //In which you need put here
 
@@ -98,6 +101,9 @@ public class courseSection extends AppCompatActivity {
         courseScrollView = (ScrollView) findViewById(R.id.scrollView2);
         courseSelectTitle = (TextView) findViewById(R.id.courseSectionSelectCourseTextView);
         courseSectionAssessmentLayout = (LinearLayout) findViewById(R.id.courseSectionAssessmentLayout);
+        courseStartNotification = (CheckBox) findViewById(R.id.notifyForCourseStartDateCheckbox);
+        courseEndNotification = (CheckBox) findViewById(R.id.notifyForCourseEndDateCheckbox);
+
 
         deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +129,12 @@ public class courseSection extends AppCompatActivity {
             instructorTN.setText(selectedSection.getInstructorTN());
             instructorEmail.setText(selectedSection.getInstructorEmail());
             courseNotes.setText(selectedSection.getNotes());
+            if (selectedSection.getNotificationStartActive() > 0) {
+                courseStartNotification.setChecked(true);
+            }
+            if (selectedSection.getNotificationEndActive() > 0) {
+                courseEndNotification.setChecked(true);
+            }
             switch (selectedSection.getStatus()) {
                 case "In Progress":
                     sectionStatus.setSelection(1);
@@ -199,11 +211,6 @@ public class courseSection extends AppCompatActivity {
                     selectedSection.setEndDate(endDateTxt.getText().toString());
 
 
-                    String endMsg = "Section " + selectedSection.getName() + " ends today!";
-                    String startMsg = "Section " + selectedSection.getName() + " starts today!";
-                    createNotification(selectedSection.getEndDate(), endMsg, selectedSection.getEndNotificationID());
-                    createNotification(selectedSection.getStartDate(), startMsg, selectedSection.getStartNotificationID());
-
 
                     selectedSection.setName(selectedCourse.getName());
                     selectedSection.setStatus(sectionStatus.getSelectedItem().toString());
@@ -211,6 +218,21 @@ public class courseSection extends AppCompatActivity {
                     selectedSection.setInstructorTN(instructorTN.getText().toString());
                     selectedSection.setInstructorEmail(instructorEmail.getText().toString());
                     selectedSection.clearAssessments();
+                    if (courseStartNotification.isChecked()) {
+                        String startMsg = "Section " + selectedSection.getName() + " starts today!";
+                        createNotification(selectedSection.getStartDate(), startMsg, selectedSection.getStartNotificationID());
+                        selectedSection.setNotificationStartActive(1);
+                    } else {
+                        selectedSection.setNotificationStartActive(0);
+                    }
+
+                    if (courseEndNotification.isChecked()) {
+                        String endMsg = "Section " + selectedSection.getName() + " ends today!";
+                        createNotification(selectedSection.getEndDate(), endMsg, selectedSection.getEndNotificationID());
+                        selectedSection.setNotificationEndActive(1);
+                    } else {
+                        selectedSection.setNotificationEndActive(0);
+                    }
 
                     databaseHelper.deleteSectionAssessments(selectedSection.getSectionID());
 
@@ -231,10 +253,18 @@ public class courseSection extends AppCompatActivity {
                             instructorTN.getText().toString(),
                             instructorEmail.getText().toString()
                             );
-                    String endMsg = "Section " + section.getName() + " ends today!";
-                    String startMsg = "Section " + section.getName() + " starts today!";
-                    createNotification(section.getEndDate(), endMsg, section.getEndNotificationID());
-                    createNotification(section.getStartDate(), startMsg, section.getStartNotificationID());
+
+                    if (courseStartNotification.isChecked()) {
+                        String startMsg = "Section " + section.getName() + " starts today!";
+                        createNotification(section.getStartDate(), startMsg, section.getStartNotificationID());
+                        section.setNotificationStartActive(1);
+                    }
+                    if (courseEndNotification.isChecked()) {
+                        String endMsg = "Section " + section.getName() + " ends today!";
+                        createNotification(section.getEndDate(), endMsg, section.getEndNotificationID());
+                        section.setNotificationEndActive(1);
+                    }
+
                     for (Assessment assessment : tempAssessmentList) {
                         section.addAssessment(assessment);
                     }

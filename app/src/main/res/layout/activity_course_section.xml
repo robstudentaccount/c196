@@ -28,6 +28,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <CheckBox
+                    android:id="@+id/notifyForCourseEndDateCheckbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Enable Notification for End Date"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.465"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/endDateText" />
+
                 <EditText
                     android:id="@+id/endDateText"
                     android:layout_width="0dp"
@@ -37,18 +48,20 @@
                     android:editable="false"
                     android:ems="10"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/textView8"
-                    app:layout_constraintTop_toBottomOf="@+id/startDateTxt" />
+                    app:layout_constraintTop_toBottomOf="@+id/notifyForCourseStartDateCheckbox" />
 
                 <Spinner
                     android:id="@+id/sectionStatusSpinner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:entries="@array/languages"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/endDateText" />
+                    app:layout_constraintTop_toBottomOf="@+id/notifyForCourseEndDateCheckbox" />
 
                 <ScrollView
                     android:id="@+id/scrollView2"
@@ -269,6 +282,17 @@
                     app:layout_constraintStart_toEndOf="@+id/textView5"
                     app:layout_constraintTop_toTopOf="@+id/textView5"
                     app:srcCompat="@drawable/ic_add_term" />
+
+                <CheckBox
+                    android:id="@+id/notifyForCourseStartDateCheckbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Enable Notification for Start Date"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.485"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/startDateTxt" />
 
             </android.support.constraint.ConstraintLayout>
         </LinearLayout>
