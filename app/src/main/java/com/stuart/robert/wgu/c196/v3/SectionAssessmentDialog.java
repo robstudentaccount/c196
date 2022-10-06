@@ -112,7 +112,7 @@ public class SectionAssessmentDialog extends AppCompatActivity {
                     if (secAssessmentNotifyStart.isChecked()) {
                         selectedAssessment.setStartDate(assessmentStartDate.getText().toString());
                         String startMSG = "Assessment " + selectedAssessment.getTitle() + " starts today!";
-                        createNotification(assessmentEndDate.getText().toString(), startMSG, selectedAssessment.getStartNotificationID());
+                        createNotification(assessmentStartDate.getText().toString(), startMSG, selectedAssessment.getStartNotificationID());
                         selectedAssessment.setNotifyStart(1);
                     } else {
                         selectedAssessment.setNotifyStart(0);
@@ -137,7 +137,7 @@ public class SectionAssessmentDialog extends AppCompatActivity {
                     if (secAssessmentNotifyStart.isChecked()) {
                         a.setNotifyStart(1);
                         String startMSG = "Assessment " + a.getTitle() + " starts today!";
-                        createNotification(assessmentEndDate.getText().toString(), startMSG, a.getStartNotificationID());
+                        createNotification(assessmentStartDate.getText().toString(), startMSG, a.getStartNotificationID());
                     }
                     if (secAssessmentNotifyEnd.isChecked()) {
                         a.setNotifyEnd(1);
