@@ -11,6 +11,8 @@ public class Assessment {
     private int startNotificationID = -1;
     private int endNotificationID = -1;
     private int sectionAssessmentID;
+    private int notifyStart = 0;
+    private int notifyEnd = 0;
 
     public int getStartNotificationID() {
         return startNotificationID;
@@ -98,5 +100,19 @@ public class Assessment {
         this.sectionAssessmentID = sectionAssessmentID;
     }
 
+    public int getNotifyStart() {
+        return notifyStart;
+    }
 
+    public void setNotifyStart(int notifyStartDate) {
+        this.notifyStart = notifyStartDate;
+    }
+
+    public int getNotifyEnd() {
+        return notifyEnd;
+    }
+
+    public void setNotifyEnd(int notifyEnd) {
+        this.notifyEnd = notifyEnd;
+    }
 }

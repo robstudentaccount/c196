@@ -65,6 +65,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 ", end_date TEXT" +
                 ", notification_start_id INTEGER" +
                 ", notification_end_id INTEGER" +
+                ", notification_start INTEGER" +
+                ", notification_end INTEGER" +
                 ");";
         db.execSQL(createTablesStatement);
     }
@@ -342,6 +344,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put("end_date", assessment.getEndDate());
         cv.put("notification_start_id", assessment.getStartNotificationID());
         cv.put("notification_end_id", assessment.getEndNotificationID());
+        cv.put("notification_start", assessment.getNotifyStart());
+        cv.put("notification_end", assessment.getNotifyEnd());
         long insert = db.insert("section_assessment", null, cv);
         assessment.setSectionAssessmentID((int) insert);
         if (insert == -1) {
@@ -354,6 +358,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ArrayList<Assessment> assessments = new ArrayList<>();
         String query = "SELECT sa.id, sa.section_id, sa.assessment_id, sa.start_date, sa.end_date " +
                 ",a.name, a.assessment_type, notification_start_id, notification_end_id" +
+                ",notification_start, notification_end" +
                 " FROM section_assessment sa " +
                 "JOIN assessments a ON a.id = sa.assessment_id " +
                 "WHERE section_id = " + sectionID;
@@ -371,6 +376,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String assessmentType = cursor.getString(6);
                 int startNotificationID = cursor.getInt(7);
                 int endNotificationID = cursor.getInt(8);
+                int startNotification = cursor.getInt(9);
+                int endNotification = cursor.getInt(10);
                 Assessment assessment = new Assessment(assessmentTitle, assessmentType);
                 assessment.setSectionAssessmentID(id);
                 assessment.setType(assessmentType);
@@ -379,6 +386,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 assessment.setId(assessment_id);
                 assessment.setStartNotificationID(startNotificationID);
                 assessment.setEndNotificationID(endNotificationID);
+                assessment.setNotifyStart(startNotification);
+                assessment.setNotifyEnd(endNotification);
                 assessments.add(assessment);
             } while (cursor.moveToNext());
         }

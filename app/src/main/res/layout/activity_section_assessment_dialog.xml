@@ -4,7 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000000"
     tools:context=".SectionAssessmentDialog">
+
+    <CheckBox
+        android:id="@+id/secAssessmentNotifyEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Notication for End Date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/secAssessmentNotifyStart" />
 
     <TextView
         android:id="@+id/titleLabel"
@@ -20,11 +32,11 @@
         android:id="@+id/assessmentSectionAddButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
         android:text="Add"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+        app:layout_constraintTop_toBottomOf="@+id/secAssessmentNotifyEnd" />
 
     <TextView
         android:id="@+id/textView15"
@@ -82,7 +94,6 @@
         app:layout_constraintStart_toStartOf="parent" />
 
 
-
     <ScrollView
         android:id="@+id/assessmentScrollView"
         android:layout_width="0dp"
@@ -123,5 +134,15 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/assessmentSectionAddButton"
         app:layout_constraintEnd_toStartOf="@+id/assessmentSectionCancelBtn"
         app:layout_constraintStart_toEndOf="@+id/assessmentSectionAddButton" />
+
+    <CheckBox
+        android:id="@+id/secAssessmentNotifyStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Notication for Start Date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/assessmentSectionEndDate" />
 
 </android.support.constraint.ConstraintLayout>

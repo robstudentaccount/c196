@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -39,6 +40,8 @@ public class SectionAssessmentDialog extends AppCompatActivity {
     private TextView title;
     private ScrollView assessmentScrollView;
     private Assessment pickedAssessment;
+    private CheckBox secAssessmentNotifyStart;
+    private CheckBox secAssessmentNotifyEnd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +61,10 @@ public class SectionAssessmentDialog extends AppCompatActivity {
         rg = (RadioGroup) findViewById(R.id.sectionAssessmentRadioGroup);
         assessmentScrollView = (ScrollView) findViewById(R.id.assessmentScrollView);
 
+        secAssessmentNotifyStart = (CheckBox) findViewById(R.id.secAssessmentNotifyStart);
+        secAssessmentNotifyEnd = (CheckBox) findViewById(R.id.secAssessmentNotifyEnd);
+
+
         String selectedAssessmentID = intent.getStringExtra("selectedAssessmentID");
         int selectedSectionAssessmentID = intent.getIntExtra("selectedSectionAssessmentID", -1);
         selectedAssessment = courseSection.getAssessmentBySectionAssessmentID(selectedSectionAssessmentID);
@@ -68,6 +75,12 @@ public class SectionAssessmentDialog extends AppCompatActivity {
             assessmentStartDate.setText(selectedAssessment.getStartDate());
             assessmentEndDate.setText(selectedAssessment.getEndDate());
             addButton.setText("Save");
+            if (selectedAssessment.getNotifyStart() > 0) {
+                secAssessmentNotifyStart.setChecked(true);
+            }
+            if (selectedAssessment.getNotifyEnd() > 0) {
+                secAssessmentNotifyEnd.setChecked(true);
+            }
         } else {
             deleteButton.setVisibility(View.GONE);
         }
@@ -96,12 +109,22 @@ public class SectionAssessmentDialog extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (selectedAssessment != null) {
-                    selectedAssessment.setStartDate(assessmentStartDate.getText().toString());
-                    selectedAssessment.setEndDate(assessmentEndDate.getText().toString());
-                    String endMSG = "Assessment " + selectedAssessment.getTitle() + " ends today!";
-                    String startMSG = "Assessment " + selectedAssessment.getTitle() + " starts today!";
-                    createNotification(assessmentEndDate.getText().toString(), endMSG, selectedAssessment.getEndNotificationID());
-                    createNotification(assessmentEndDate.getText().toString(), startMSG, selectedAssessment.getStartNotificationID());
+                    if (secAssessmentNotifyStart.isChecked()) {
+                        selectedAssessment.setStartDate(assessmentStartDate.getText().toString());
+                        String startMSG = "Assessment " + selectedAssessment.getTitle() + " starts today!";
+                        createNotification(assessmentEndDate.getText().toString(), startMSG, selectedAssessment.getStartNotificationID());
+                        selectedAssessment.setNotifyStart(1);
+                    } else {
+                        selectedAssessment.setNotifyStart(0);
+                    }
+                    if (secAssessmentNotifyEnd.isChecked()) {
+                        selectedAssessment.setEndDate(assessmentEndDate.getText().toString());
+                        String endMSG = "Assessment " + selectedAssessment.getTitle() + " ends today!";
+                        createNotification(assessmentEndDate.getText().toString(), endMSG, selectedAssessment.getEndNotificationID());
+                        selectedAssessment.setNotifyEnd(1);
+                    } else {
+                        selectedAssessment.setNotifyEnd(0);
+                    }
 
                 } else {
                     System.out.println("CLICKED!!");
@@ -110,10 +133,18 @@ public class SectionAssessmentDialog extends AppCompatActivity {
                     a.setStartDate(assessmentStartDate.getText().toString());
                     a.setEndDate(assessmentEndDate.getText().toString());
                     a.setId(pickedAssessment.getId());
-                    String endMSG = "Assessment " + a.getTitle() + " ends today!";
-                    String startMSG = "Assessment " + a.getTitle() + " starts today!";
-                    createNotification(assessmentEndDate.getText().toString(), endMSG, a.getEndNotificationID());
-                    createNotification(assessmentEndDate.getText().toString(), startMSG, a.getStartNotificationID());
+
+                    if (secAssessmentNotifyStart.isChecked()) {
+                        a.setNotifyStart(1);
+                        String startMSG = "Assessment " + a.getTitle() + " starts today!";
+                        createNotification(assessmentEndDate.getText().toString(), startMSG, a.getStartNotificationID());
+                    }
+                    if (secAssessmentNotifyEnd.isChecked()) {
+                        a.setNotifyEnd(1);
+                        String endMSG = "Assessment " + a.getTitle() + " ends today!";
+                        createNotification(assessmentEndDate.getText().toString(), endMSG, a.getEndNotificationID());
+                    }
+
                     boolean b = courseSection.addAssessment(a);
                 }
                 finish();
